@@ -2,6 +2,8 @@
   "name": "electron-react-ts",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "./public/electron.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -15,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "react:start": "cross-env yarn start",
+    "electron:start": "electronmon ."
   },
   "eslintConfig": {
     "extends": [
@@ -25,14 +29,18 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 1 electron version"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 electron version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0",
+    "cross-env": "^7.0.3",
+    "electron": "^20.0.3",
+    "electron-builder": "^23.3.3",
+    "electronmon": "^2.0.2",
+    "wait-on": "^6.0.1"
   }
 }
