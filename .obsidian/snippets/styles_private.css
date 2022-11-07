@@ -16,16 +16,27 @@ div.kanban-plugin {
 
 
 .kanban-plugin__lane .kanban-plugin__lane-grip {
-	display: none;
-	height: 100%;
+	overflow: hidden;
+	opacity: 0;
+	margin: 0;
+	width: 0;
+	border-radius: 5px;
+	cursor: hand;
+	transition: all .2s ease;
+	/* transition: bg 0s; */
 }
 
 .kanban-plugin__lane-header-wrapper:hover .kanban-plugin__lane-grip {
-	display: block;
+	width: max-content;
+	padding: 4px 6px 4px 4px;
+	margin-right: 5px;
 	opacity: 0.8;
 }
 
-
+.kanban-plugin__lane-grip:hover {
+	opacity: 1;
+	color: var(--icon-color-hover);
+}
 
 .kanban-plugin__lane {
 	border: none;
@@ -38,7 +49,7 @@ div.kanban-plugin {
 	padding: var(--column-padding);
 	border-radius: 5px;
 	border: none;
-	align-items: stretch;
+	align-items: center;
 }
 
 .kanban-plugin__lane-header-wrapper:hover {
@@ -47,11 +58,19 @@ div.kanban-plugin {
 
 .kanban-plugin__lane-title-text {
 	font-size: 1.5em;
+	padding-bottom: 0.1rem;
+}
+
+.kanban-plugin__lane-header-wrapper .kanban-plugin__icon {
+	width: 14px;
+	height: 14px;
 }
 
 
 
 .kanban-plugin__item-button-wrapper {
+	margin: 5px 0;
+	padding: 0;
 	border-top: none;
 }
 
@@ -74,15 +93,19 @@ button.kanban-plugin__new-item-button:hover {
 
 
 
-
 .kanban-plugin__lane-items.kanban-plugin__vertical {
 	padding: 0;
 	margin: 0;
 	order: 3;
+	row-gap: 6px;
 }
 
 .kanban-plugin__lane-items.kanban-plugin__vertical::-webkit-scrollbar {
 	display: none;
+}
+
+div.kanban-plugin__item-wrapper {
+	margin-top: 0;
 }
 
 .kanban-plugin__item {
