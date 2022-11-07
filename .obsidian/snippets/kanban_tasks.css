@@ -1,4 +1,8 @@
 .kanban-plugin__board > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
-	color: var(--color-base-100);
+	color: var(--color-base-70);
 	background: none;
+}
+
+.kanban-plugin__board > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper .is-button:hover {
+	color: var(--color-base-100);
 }
