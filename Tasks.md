@@ -6,7 +6,6 @@ kanban-plugin: basic
 
 ## Общие
 
-- [ ] date test - before now<br><br>@{2022-11-03}<br>#Вова
 
 
 ## <div style='color: #297bff'>Задачи Вовы</div>
