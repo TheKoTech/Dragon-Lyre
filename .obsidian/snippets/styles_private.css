@@ -1,16 +1,94 @@
-/* .kanban-plugin__item-metadata:not(:empty) {
-	display: flex;
-	flex-direction: row;
-	align-items: baseline;
-	flex-wrap: wrap;
-	justify-content: space-between;
-} */
+/*  */
+
+
+/* Этот файл существует только для меня. Не включай его. Здесь мои настройки, которые я бы хотел чтобы ты не трогал. */
+
+
+
+div.kanban-plugin {
+	--lane-width: 310px;
+}
+
+.kanban-plugin__board>div {
+	column-gap: 10px;
+}
+
+
+.kanban-plugin__lane .kanban-plugin__lane-grip {
+	visibility: hidden;
+}
+
+.kanban-plugin__lane:hover .kanban-plugin__lane-grip {
+	visibility: visible;
+	opacity: 0.5;
+}
+
+.kanban-plugin__lane {
+	border: none;
+	background: none;
+}
+
+.kanban-plugin__lane-header-wrapper:hover .kanban-plugin__lane-grip {
+	opacity: 1;
+}
+
+.kanban-plugin__lane-header-wrapper {
+	border: none;
+}
+
+.kanban-plugin__lane-title-text {
+	font-size: 1.5em;
+}
+
+
+
+.kanban-plugin__item-button-wrapper {
+	border-top: none;
+}
+
+button.kanban-plugin__new-item-button {
+	font-size: 0em;
+	color: var(--color-base-50);
+	border: none;
+	box-shadow: none;
+}
+
+button.kanban-plugin__new-item-button:hover {
+	color: var(--color-base-80);
+	background: var(--color-base-30);
+}
+
+.kanban-plugin__new-item-button>span {
+	font-size: 1.5rem;
+	padding-bottom: 0.25rem;
+}
+
+
+
+
+.kanban-plugin__lane-items.kanban-plugin__vertical {
+	order: 3;
+}
+
+.kanban-plugin__lane-items.kanban-plugin__vertical::-webkit-scrollbar {
+	display: none;
+}
+
+.kanban-plugin__item-tags {
+	margin: 5px 0 0 0;
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata {
+	padding-top: 8px;
+	width: fit-content;
+}
 
 .kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata>.kanban-plugin__item-metadata-date-wrapper.has-background {
 	background-color: transparent;
 	color: var(--color-base-70);
 	padding: 0;
 	margin: 0;
+	/* margin-bottom: 3px; */
 	display: flex;
 	align-items: center;
 	column-gap: 0.3rem;
@@ -35,6 +113,6 @@
 	--pip-color: var(--color-yellow);
 }
 
-.kanban-plugin__board > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
+.kanban-plugin__board>div> :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
 	--pip-color: var(--color-base-70);
 }
