@@ -1,3 +1,4 @@
-.kanban-plugin__board.kanban-plugin__horizontal.kanban-plugin__scroll-container > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
+.kanban-plugin__board > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
+	color: var(--color-base-100);
 	background: none;
 }
