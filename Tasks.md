@@ -23,7 +23,7 @@ kanban-plugin: basic
 - [ ] Звуковые эффекты<br><br>@{2022-12-15}
 
 
-## Завершено
+## <div class='tasks_completed'>Завершено</div>
 
 - [ ] [Рефлексия - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) @{2022-11-07} @@{23:45}
 
