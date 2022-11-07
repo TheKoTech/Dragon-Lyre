@@ -1,0 +1,40 @@
+/* .kanban-plugin__item-metadata:not(:empty) {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	flex-wrap: wrap;
+	justify-content: space-between;
+} */
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata>.kanban-plugin__item-metadata-date-wrapper.has-background {
+	background-color: transparent;
+	color: var(--color-base-70);
+	padding: 0;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	column-gap: 0.3rem;
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata>.kanban-plugin__item-metadata-date-wrapper.has-background::before {
+	content: '⬤ ';
+	font-size: 0.6em;
+	padding-top: 0.1rem;
+	color: var(--pip-color);
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata-date-wrapper[style*='background-color:rgba(0, 0, 0, 1);'] {
+	--pip-color: var(--color-red);
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata-date-wrapper[style*='--date-background-color:rgba(255, 0, 0, 1);'] {
+	--pip-color: var(--color-yellow);
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata-date-wrapper[style*='--date-background-color:rgba(255, 252, 85, 1);'] {
+	--pip-color: var(--color-yellow);
+}
+
+.kanban-plugin__board > div > :nth-last-child(2) .kanban-plugin__item-metadata-date-wrapper {
+	--pip-color: var(--color-base-70);
+}

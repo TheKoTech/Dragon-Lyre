@@ -1,0 +1,371 @@
+:root {
+	--js-color: rgb(212, 208, 0);
+	--js-content: 'javascript';
+
+	--jsx-color: #00b8e6;
+	--jsx-content: 'React';
+
+	--ts-color: rgb(0, 122, 204);
+	--ts-content: 'typescript';
+
+	--json-color: rgb(224, 172, 0);
+	--json-content: 'json';
+
+	--cs-color: rgb(138, 45, 141);
+	--cs-content: 'C#';
+
+	--cpp-color: rgb(17, 111, 182);
+	--cpp-content: 'C++';
+
+	--c-color: rgb(17, 111, 182);
+	--c-content: 'C';
+
+	--clike-color: rgb(43, 115, 170);
+	--clike-content: 'C-like';
+
+	--java-color: #f89820;
+	--java-content: 'java';
+
+	--go-color: #29beb0;
+	--go-content: 'Go';
+
+	--py-color: rgb(70, 147, 209);
+	--py-content: 'python';
+	
+	--lua-color: #0000df;
+	--lua-content: 'lua';
+
+	--ruby-color: #D51F06;
+	--ruby-content: 'ruby';
+
+	--rust-color: #B7410E;
+	--rust-content: 'rust';
+
+	--css-color: rgb(41, 101, 241);
+	--css-content: 'CSS';
+
+	--scss-color: rgb(204, 102, 153);
+	--scss-content: 'SCSS';
+
+	--less-color: rgb(22, 76, 146);
+	--less-content: 'LESS';
+
+	--htmlmixed-color: #e34c26;
+	--htmlmixed-content: 'HTML';
+
+	--xml-color: #005faf;
+	--xml-content: 'XML';
+
+	--markdown-color: #f3f3f3;
+	--markdown-content: 'markdown';
+
+	--sql-color: #0079d6;
+	--sql-content: 'SQL';
+
+	--sh-color: #00d890;
+	--sh-content: 'Shell';
+
+	--console-color: #00d10a;
+	--console-content: 'console';
+
+	--yaml-color: #0068df;
+	--yaml-content: 'YAML';
+
+	/* 
+	--LANG-color: #ffffff;
+	--LANG-content: 'LANG'; 
+	*/
+}
+
+.markdown-rendered :not(pre)>code {
+	display: inline-block;
+	padding: 0 6px;
+	color: var(--color-base-100);
+	background: hsla(var(--interactive-accent-hsl), 0.15);
+}
+
+.markdown-rendered pre {
+	padding: 0px;
+	border: none; 
+}
+
+.markdown-rendered pre code {
+	display: block;
+	padding: 17px 18px 17px 24px;
+	border: 1px rgba(0, 0, 0, 0.1) solid;
+}
+
+.markdown-rendered pre code::before {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	width: 20px;
+	content: '';
+	border-left: rgb(241, 241, 241) 4px solid;
+	border-radius: inherit;
+}
+
+pre>code[class*='language']::after {
+	position: absolute;
+	content: '';
+	right: 45px;
+	bottom: 1px;
+	text-align: right;
+	font-weight: 300;
+	font-size: 11px;
+	color: rgb(128, 128, 128);
+}
+
+
+pre>code.language-js::before {
+	border-color: var(--js-color);
+}
+
+pre>code.language-js::after {
+	content: var(--js-content);
+}
+
+
+
+pre>code.language-jsx::before {
+	border-color: var(--jsx-color);
+}
+
+pre>code.language-jsx::after {
+	content: var(--jsx-content);
+}
+
+
+pre>code.language-ts::before {
+	border-color: var(--ts-color);
+}
+
+pre>code.language-ts::after {
+	content: var(--ts-content);
+}
+
+
+
+pre>code.language-json::before {
+	border-color: var(--json-color);
+}
+
+pre>code.language-json::after {
+	content: var(--json-content);
+}
+
+
+
+pre>code.language-py::before {
+	border-color: var(--py-color);
+}
+
+pre>code.language-py::after {
+	content: var(--py-content);
+}
+
+
+
+pre>code.language-lua::before {
+	border-color: var(--lua-color);
+}
+
+pre>code.language-lua::after {
+	content: var(--lua-content);
+}
+
+
+
+pre>code.language-ruby::before {
+	border-color: var(--ruby-color);
+}
+
+pre>code.language-ruby::after {
+	content: var(--ruby-content);
+}
+
+
+
+pre>code.language-rust::before {
+	border-color: var(--rust-color);
+}
+
+pre>code.language-rust::after {
+	content: var(--rust-content);
+}
+
+
+
+pre>code.language-cs::before {
+	border-color: var(--cs-color);
+}
+
+pre>code.language-cs::after {
+	content: var(--cs-content);
+}
+
+
+
+pre>code.language-cpp::before {
+	border-color: var(--cpp-color);
+}
+
+pre>code.language-cpp::after {
+	content: var(--cpp-content);
+}
+
+
+
+pre>code.language-c::before {
+	border-color: var(--c-color);
+}
+
+pre>code.language-c::after {
+	content: var(--c-content);
+}
+
+
+
+pre>code.language-clike::before {
+	border-color: var(--clike-color);
+}
+
+pre>code.language-clike::after {
+	content: var(--clike-content);
+}
+
+
+
+pre>code.language-java::before {
+	border-color: var(--java-color);
+}
+
+pre>code.language-java::after {
+	content: var(--java-content);
+}
+
+
+
+pre>code.language-go::before {
+	border-color: var(--go-color);
+}
+
+pre>code.language-go::after {
+	content: var(--go-content);
+}
+
+
+
+pre>code.language-css::before {
+	border-color: var(--css-color);
+}
+
+pre>code.language-css::after {
+	content: var(--css-content);
+}
+
+
+
+pre>code.language-scss::before {
+	border-color: var(--scss-color);
+}
+
+pre>code.language-scss::after {
+	content: var(--scss-content);
+}
+
+
+
+pre>code.language-less::before {
+	border-color: var(--less-color);
+}
+
+pre>code.language-less::after {
+	content: var(--less-content);
+}
+
+
+
+pre>code.language-htmlmixed::before {
+	border-color: var(--htmlmixed-color);
+}
+
+pre>code.language-htmlmixed::after {
+	content: var(--htmlmixed-content);
+}
+
+
+
+pre>code.language-xml::before {
+	border-color: var(--xml-color);
+}
+
+pre>code.language-xml::after {
+	content: var(--xml-content);
+} 
+
+
+
+pre>code.language-markdown::before {
+	border-color: var(--markdown-color);
+}
+
+pre>code.language-markdown::after {
+	content: var(--markdown-content);
+}
+
+
+
+pre>code.language-sql::before {
+	border-color: var(--sql-color);
+}
+
+pre>code.language-sql::after {
+	content: var(--sql-content);
+}
+
+
+
+pre>code.language-sh::before {
+	border-color: var(--sh-color);
+}
+
+pre>code.language-sh::after {
+	content: var(--sh-content);
+}
+
+
+
+pre>code.language-console::before {
+	border-color: var(--console-color);
+}
+
+pre>code.language-console::after {
+	content: var(--console-content);
+}
+
+
+
+pre>code.language-yaml::before {
+	border-color: var(--yaml-color);
+}
+
+pre>code.language-yaml::after {
+	content: var(--yaml-content);
+} 
+
+
+
+/* 
+
+
+
+pre>code.language-NAME::before {
+	border-color: var(--NAME-color);
+}
+
+pre>code.language-NAME::after {
+	content: var(--NAME-content);
+} 
+*/

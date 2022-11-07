@@ -1,0 +1,27 @@
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6),
+.HyperMD-header-1,
+.HyperMD-header-2,
+.HyperMD-header-3,
+.HyperMD-header-4,
+.HyperMD-header-5,
+.HyperMD-header-6
+ {
+	position: relative;
+	display: flex;
+	margin-bottom: 0px;
+}
+
+.markdown-rendered :is(h1, h2):not([class]),
+.markdown-source-view.mod-cm6 .HyperMD-header-1,
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+	padding-bottom: 4px;
+	border-bottom: 2px var(--interactive-accent) solid;
+}
+
+.heading-collapse-indicator {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+}
