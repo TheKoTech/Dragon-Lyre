@@ -6,7 +6,6 @@ kanban-plugin: basic
 
 ## ### Общие
 
-- [ ] Подготовить небольшую презентацию<br><br>@{2022-11-09}
 
 
 ## ### <div style='color: #297bff'>Задачи Вовы</div>
@@ -33,6 +32,7 @@ kanban-plugin: basic
 
 ## ### <div class='tasks_completed'>Завершено</div>
 
+- [ ] Подготовить небольшую презентацию<br><br>@{2022-11-09}
 - [ ] [График - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) @{2022-11-07} @@{23:45}<br>#Вова
 - [ ] [Рефлексия - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) @{2022-11-07} @@{23:45}<br>#Дима
 
