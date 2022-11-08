@@ -4,8 +4,17 @@ import Sound from './Sound'
 
 function Scene() {
 
-	const handleOnPlay = (e) => {
-		console.log('Play button clicked')
+	const handleOnPlay = () => {
+		let audio = new Audio('/sounds/10000208.ogg');
+		let promise = audio.play();
+
+		if (promise !== undefined) {
+			promise.then(_ => {
+				console.log('Audio start playing.')
+			}).catch(error => {
+				console.log(`Audio can\'t be played. (${error})`)
+			})
+		}
 	}
 
 	return (
