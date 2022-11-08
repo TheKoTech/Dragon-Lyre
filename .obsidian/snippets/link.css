@@ -1,0 +1,36 @@
+/* .markdown-source-view .cm-hmd-internal-link > .cm-underline,
+.markdown-rendered a.internal-link {
+	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.06);
+	border-radius: 4px;
+	padding: 0px 5px;
+	text-decoration: none;
+}
+
+.markdown-source-view .cm-hmd-internal-link .cm-underline:hover,
+.markdown-rendered a.internal-link:hover {
+	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.12);
+} */
+
+:is(.markdown-rendered, .markdown-preview-view) a {
+	position: relative;
+	display: inline-block;
+	background: none;
+	padding: 2px 6px;
+	/* text-decoration: none; */
+	
+}
+
+:is(.markdown-rendered, .markdown-preview-view) a::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 4px;
+	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.08);
+	content: '';
+
+}
+:is(.markdown-rendered, .markdown-preview-view) a:hover::before {
+	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.15);
+}
