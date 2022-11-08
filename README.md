@@ -8,6 +8,8 @@ In the project directory, you can run:
 
 ### `npm install`
 
+### `npm install yarn`
+
 Installs all required components to run the app.
 
 ### `npm start`
