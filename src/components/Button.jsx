@@ -3,7 +3,7 @@ import React from 'react';
 const Button = () => {
 	/**
 	 * Creates a directory with given name.
-	 * @param {string} name
+	 * @param {string} name the name
 	 */
 	function _createDirectory(name) {
 
