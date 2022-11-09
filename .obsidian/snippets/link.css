@@ -15,22 +15,12 @@
 	position: relative;
 	display: inline-block;
 	background: none;
-	padding: 2px 6px;
-	/* text-decoration: none; */
-	
-}
-
-:is(.markdown-rendered, .markdown-preview-view) a::before {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
+	padding: 0 6px;
+	text-decoration: none;
+	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.08);	
 	border-radius: 4px;
-	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.08);
-	content: '';
-
 }
-:is(.markdown-rendered, .markdown-preview-view) a:hover::before {
+
+:is(.markdown-rendered, .markdown-preview-view) a:hover {
 	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.15);
 }
