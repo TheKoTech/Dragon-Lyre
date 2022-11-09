@@ -4,18 +4,48 @@
 
 .sounds_list {
 	display: flex;
-	flex-direction: row;
 	flex-wrap: wrap;
+	column-width: 200px;
+	column-gap: 5px;
+	row-gap: 5px;
 }
 
 .sound {
 	display: flex;
 	background: #eee;
-	padding: 7px 15px;
+	padding: 5px 15px;
 	flex-direction: column;
 	row-gap: 5px;
+	border-radius: 5px;
+	border: 1px solid #000;
+	flex-basis: 100px;
 }
 
 .sound .play_btn {
 	display: block;
+}
+
+.sound_add_btn {
+	background: #eee;
+	padding: 5px 15px;
+	border-radius: 5px;
+	border: 1px solid #000;
+	flex-basis: 100px;
+}
+
+.sound_add_btn p {
+	text-align: center;
+}
+
+.sound_add_btn:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+
+.sound_add_btn:active {
+	background: #ccc;
+}
+
+.sound_add_btn p::selection {
+	display: none;
 }

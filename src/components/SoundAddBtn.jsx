@@ -1,8 +1,10 @@
 import React from 'react'
 
-function SoundAddBtn() {
+function SoundAddBtn({ onClick }) {
 	return (
-		<span>SoundAddBtn</span>
+		<span className='sound_add_btn' onClick={onClick}>
+			<p>Add Sound</p>
+		</span>
 	)
 }
 
