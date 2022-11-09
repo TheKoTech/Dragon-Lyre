@@ -18,13 +18,13 @@ function Scene() {
 		}
 	]);
 
-	// const audioContext = new AudioContext();
-	// let soundsBuffers = [];
-	// let soundSource;
-	// setupSounds(['/sounds/10000208.mp3']).then((response) => {
-	// 	soundsBuffers = response;
-	// 	console.log('All sounds are ready!');
-	// });
+	const audioContext = new AudioContext();
+	let soundsBuffers = [];
+	let soundSources = [];
+	setupSounds(['/sounds/10000208.mp3']).then((response) => {
+		soundsBuffers = response;
+		console.log('All sounds are ready!');
+	});
 
 	/**
 	 * @param {number} id номер звука
@@ -105,6 +105,12 @@ function Scene() {
 			{
 				id: newId,
 				title: `Sound item ${ newId + 1 }`,
+				isPlayed: false,
+				isLooped: true,
+				volume: 50,
+				audioFile: undefined,
+				soundBuffer: undefined,
+				soundSource: undefined,
 			}
 		]);
 	};
