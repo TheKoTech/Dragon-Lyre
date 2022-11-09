@@ -1,16 +1,3 @@
-/* .markdown-source-view .cm-hmd-internal-link > .cm-underline,
-.markdown-rendered a.internal-link {
-	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.06);
-	border-radius: 4px;
-	padding: 0px 5px;
-	text-decoration: none;
-}
-
-.markdown-source-view .cm-hmd-internal-link .cm-underline:hover,
-.markdown-rendered a.internal-link:hover {
-	background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.12);
-} */
-
 :is(.markdown-rendered, .markdown-preview-view) a {
 	position: relative;
 	display: inline-block;
