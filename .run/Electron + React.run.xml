@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Electron + React" type="CompoundRunConfigurationType">
-    <toRun name="Electron" type="js.build_tools.npm" />
-    <toRun name="React" type="js.build_tools.npm" />
-    <method v="2" />
-  </configuration>
-</component>
