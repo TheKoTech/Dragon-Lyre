@@ -10,7 +10,6 @@ kanban-plugin: basic
 
 ## ### <div style='color: #297bff'>Задачи Вовы</div>
 
-- [ ] Интерфейс одной сцены в режиме воспроизведения<br><br>- [x] Один звук<br>- [x] Множество звуков<br>- [x] Отобразить элементы управления<br>- [x] Добавление<br>- [x] Удаление<br><br>@{2022-11-10}
 - [ ] Узнать стиль написания компонентов в других крупных проектах на React
 - [ ] Добавить возможность выбирать звуки для сцены из файлов компьютера @{2022-11-17}
 - [ ] Интерфейс одной сцены в режиме редактирования @{2022-11-24}
@@ -33,6 +32,7 @@ kanban-plugin: basic
 
 ## ### <div class='tasks_completed'>Завершено</div>
 
+- [ ] Интерфейс одной сцены в режиме воспроизведения<br><br>- [x] Один звук<br>- [x] Множество звуков<br>- [x] Отобразить элементы управления<br>- [x] Добавление<br>- [x] Удаление<br><br>@{2022-11-10}
 - [ ] Подготовить небольшую презентацию<br>@{2022-11-09}<br>#Вова
 - [ ] [График - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) <br>@{2022-11-07} @@{23:45}<br>#Вова
 - [ ] [Рефлексия - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) <br>@{2022-11-07} @@{23:45}<br>#Дима
