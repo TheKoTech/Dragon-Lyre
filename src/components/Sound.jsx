@@ -1,10 +1,20 @@
 import React from 'react'
 
 
-function Sound({ id, title, isPlayed, isLooped, volume, onPlayBtn, onVolumeChange, onLoopedChange }) {
+function Sound({ 
+	id, title, isPlayed, isLooped, volume, 
+	onPlayBtn, onVolumeChange, onLoopedChange, onDelete 
+}) {
 	return (
 		<span className='sound'>
-			{title}
+			<div className="sound_title">
+				<h2>
+				{title}
+				</h2>
+				<a className='close_btn' onClick={() => onDelete(id)}>
+					X
+				</a>
+			</div>
 			<input
 				className='play_btn'
 				type='button'

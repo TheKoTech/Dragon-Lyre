@@ -1,7 +1,7 @@
-import React from 'react'
-import { useState } from 'react'
-import Sound from './Sound'
-import SoundAddBtn from './SoundAddBtn'
+import React from 'react';
+import { useState } from 'react';
+import Sound from './Sound';
+import SoundAddBtn from './SoundAddBtn';
 
 
 function Scene() {
@@ -12,7 +12,7 @@ function Scene() {
 		isLooped: true,
 		volume: 50,
 		audioFile: undefined
-	}])
+	}]);
 
 	/**
 	 * @param {number} id номер звука
@@ -20,18 +20,18 @@ function Scene() {
 	const handlePlayBtn = id => {
 		// следи за постоянством кода. Убрал точки с запятыми
 		// Значение не меняется - ставим const
-		const audio = new Audio('/sounds/10000208.ogg')
-		const promise = audio.play()
+		const audio = new Audio('/sounds/10000208.ogg');
+		const promise = audio.play();
 
 		if (promise !== undefined) {
 			promise.then(_ => {
-				console.log('Audio start playing.')
+				console.log('Audio start playing.');
 			}).catch(error => {
 				// Ты используешь backticks, обратный слеш для кавычек не нужен
-				console.log(`Audio can't be played. (${error})`)
-			})
+				console.log(`Audio can't be played. (${error})`);
+			});
 		}
-	}
+	};
 
 	/**
 	 * @param {Event} e 
@@ -42,12 +42,12 @@ function Scene() {
 			const newList = prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, volume: e.target.value }
-					: sound
-			})
-			console.log(`Sound ${id} { volume: ${newList[id].volume} }`)
-			return newList
-		})
-	}
+					: sound;
+			});
+			console.log(`Sound ${id} { volume: ${newList[id].volume} }`);
+			return newList;
+		});
+	};
 
 	/**
 	 * @param {Event} e 
@@ -58,25 +58,33 @@ function Scene() {
 			const newList = prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, isLooped: e.target.checked }
-					: sound
-			})
-			console.log(`Sound ${id} { isLooped: ${newList[id].isLooped} }`)
-			return newList
-		})
-	}
+					: sound;
+			});
+			console.log(`Sound ${id} { isLooped: ${newList[id].isLooped} }`);
+			return newList;
+		});
+	};
 
 	const addSound = () => {
+		const newId = Math.max(...soundsList.map(sound => sound.id)) + 1;
 		setSoundsList([
 			...soundsList,
 			{
-				id: soundsList.length,
-				title: `Sound item ${soundsList.length + 1}`,
+				id: newId,
+				title: `Sound item ${newId + 1}`,
 				isPlayed: false,
 				isLooped: true,
 				volume: 50,
 				audioFile: undefined
-			}])
-	}
+			}
+		]);
+	};
+
+	const deleteSound = (id) => {
+		setSoundsList(prevList =>
+			prevList.filter(sound => sound.id !== id)
+		)
+	};
 
 	return (
 		<div className='scene'>
@@ -90,6 +98,7 @@ function Scene() {
 						onPlayBtn={handlePlayBtn}
 						onVolumeChange={handleVolumeChange}
 						onLoopedChange={handleLoopedChange}
+						onDelete={deleteSound}
 					/>
 				)}
 				<SoundAddBtn onClick={addSound} />

@@ -21,6 +21,35 @@
 	flex-basis: 100px;
 }
 
+.sound_title {
+	display: flex;
+	justify-content: space-between;
+}
+
+.sound h2 {
+	font-size: 1em;
+	margin: 0;
+}
+
+.sound .close_btn {
+	padding: 0 6px;
+	background: transparent;
+	border-radius: 5px;
+}
+
+.sound .close_btn:hover {
+	background: rgba(0, 0, 0, .2);
+	cursor: pointer;
+}
+
+.sound .close_btn::selection {
+	display: none;
+}
+
+.sound .play_btn {
+	display: block;
+}
+
 .sound .play_btn {
 	display: block;
 }
