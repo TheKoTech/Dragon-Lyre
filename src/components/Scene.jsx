@@ -19,7 +19,7 @@ function Scene({ audioContext }) {
 	};
 
 	/**
-	 *
+	 * Creates audio source (thread) and starts it.
 	 * @param {AudioBuffer} audioBuffer
 	 * @returns {AudioBufferSourceNode}
 	 */
@@ -33,7 +33,7 @@ function Scene({ audioContext }) {
 	}
 
 	/**
-	 *
+	 * Decodes audio data from the file and creates audio buffer.
 	 * @param {String} filePath The path must contain the file extension.
 	 * @returns {Promise<AudioBuffer>} A promise of a sound buffer.
 	 */
@@ -80,34 +80,54 @@ function Scene({ audioContext }) {
 	};
 
 	const addSound = () => {
-		selectFile('', false).then(file => {
-				// TODO: Cut into two methods.
-				const newId = soundsList.length === 0
-					? 0
-					: Math.max(...soundsList.map(sound => sound.id)) + 1;
-				console.log(soundsList.map(sound => sound.id));
-				const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
-
-				setupSound('/sounds/' + file.name).then(audioBuffer => {
-					const audioSource = playSound(audioBuffer);
-					audioSource.loop = true;
-
-					setSoundsList([
-						...soundsList,
-						{
-							id: newId,
-							title: soundName,
-							isPlayed: false,
-							isLooped: true,
-							volume: 50,
-							buffer: audioBuffer,
-							source: audioSource,
-						}
-					]);
-				});
-			}
-		);
+		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
 	};
+
+	/**
+	 * Initialize AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
+	 * @param {File} file
+	 */
+	function setupSoundAndAddInSoundList(file) {
+		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
+		const filePath = '/sounds/' + file.name;
+		setupSound(filePath).then(audioBuffer => addSoundInSoundList(soundName, audioBuffer));
+	}
+
+	/**
+	 * Start play sound. Creates an object Sound and add it to the Scene.
+	 * @param {String} soundName
+	 * @param {AudioBuffer} audioBuffer
+	 */
+	function addSoundInSoundList(soundName, audioBuffer) {
+		const audioSource = playSound(audioBuffer);
+		audioSource.loop = true;
+
+		setSoundsList([
+			...soundsList,
+			{
+				id: getNewSoundId(),
+				title: soundName,
+				isPlayed: false,
+				isLooped: true,
+				volume: 50,
+				buffer: audioBuffer,
+				source: audioSource,
+			}
+		]);
+	}
+
+	/**
+	 * Returns max sound ID + 1.
+	 * @returns {number}
+	 */
+	function getNewSoundId() {
+		let id;
+		if (soundsList.length === 0)
+			id = 0;
+		else
+			id = Math.max(...soundsList.map(sound => sound.id)) + 1;
+		return id;
+	}
 
 	/**
 	 * Select file(s).
