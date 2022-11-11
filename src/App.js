@@ -4,10 +4,10 @@ import Scene from './components/Scene';
 
 
 function App() {
-	const [audioContext, setAudioContext] = useState(new AudioContext());
+	const [audioContext] = useState(new AudioContext());
 	return (
-		<div className="App">
-			<Scene audioContext={audioContext}/>
+		<div className='App'>
+			<Scene audioContext={ audioContext }/>
 		</div>
 	);
 }

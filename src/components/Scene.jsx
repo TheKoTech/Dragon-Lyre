@@ -4,42 +4,25 @@ import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
 
 
-function Scene() {
-	const [soundsList, setSoundsList] = useState([
-		{
-			id: 0,
-			title: 'Sound item 1',
-			isPlayed: false,
-			isLooped: true,
-			volume: 50,
-			audioFile: undefined,
-			soundBuffer: undefined,
-			soundSource: undefined,
-		}
-	]);
-
-	const audioContext = new AudioContext();
-	let soundsBuffers = [];
-	let soundSources = [];
-	setupSounds(['/sounds/10000208.mp3']).then((response) => {
-		soundsBuffers = response;
-		console.log('All sounds are ready!');
-	});
+function Scene({ audioContext }) {
+	const [soundsList, setSoundsList] = useState([]);
 
 	/**
-	 * @param {number} id номер звука
+	 * @param {number} id
 	 */
 	const handlePlayBtn = id => {
-		if (soundSources !== undefined) {
-			for (const soundSource of soundSources) {
-				soundSource.stop();
-			}
-		}
-		for (const soundBuffer of soundsBuffers) {
-			soundSources.push(playSound(soundBuffer));
-		}
+		const sound = soundsList[id];
+		if (sound.source !== undefined)
+			sound.source.stop();
+		sound.source = playSound(sound.buffer);
+		sound.source.loop = sound.isLooped;
 	};
 
+	/**
+	 *
+	 * @param {AudioBuffer} audioBuffer
+	 * @returns {AudioBufferSourceNode}
+	 */
 	function playSound(audioBuffer) {
 		const source = audioContext.createBufferSource();
 		source.buffer = audioBuffer;
@@ -49,15 +32,13 @@ function Scene() {
 		return source;
 	}
 
-	async function setupSounds(filePaths) {
-		const audioBuffers = [];
-
-		for (const filePath of filePaths) {
-			const audioBuffer = await getAudioBufferFromFile(filePath);
-			audioBuffers.push(audioBuffer);
-		}
-
-		return audioBuffers;
+	/**
+	 *
+	 * @param {String} filePath The path must contain the file extension.
+	 * @returns {Promise<AudioBuffer>} A promise of a sound buffer.
+	 */
+	async function setupSound(filePath) {
+		return await getAudioBufferFromFile(filePath);
 	}
 
 	async function getAudioBufferFromFile(filePath) {
@@ -99,26 +80,63 @@ function Scene() {
 	};
 
 	const addSound = () => {
-		const newId = Math.max(...soundsList.map(sound => sound.id)) + 1;
-		setSoundsList([
-			...soundsList,
-			{
-				id: newId,
-				title: `Sound item ${ newId + 1 }`,
-				isPlayed: false,
-				isLooped: true,
-				volume: 50,
-				audioFile: undefined,
-				soundBuffer: undefined,
-				soundSource: undefined,
+		selectFile('', false).then(file => {
+				// TODO: Cut into two methods.
+				const newId = soundsList.length === 0
+					? 0
+					: Math.max(...soundsList.map(sound => sound.id)) + 1;
+				console.log(soundsList.map(sound => sound.id));
+				const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
+
+				setupSound('/sounds/' + file.name).then(audioBuffer => {
+					const audioSource = playSound(audioBuffer);
+					audioSource.loop = true;
+
+					setSoundsList([
+						...soundsList,
+						{
+							id: newId,
+							title: soundName,
+							isPlayed: false,
+							isLooped: true,
+							volume: 50,
+							buffer: audioBuffer,
+							source: audioSource,
+						}
+					]);
+				});
 			}
-		]);
+		);
 	};
 
+	/**
+	 * Select file(s).
+	 * @param {String} contentType The files you wish to select. For instance, use "image/*" to select all types of images.
+	 * @param {Boolean} multiple Indicates if the user can select multiple files.
+	 * @returns {Promise<File|File[]>} A promise of a file or array of files if the multiple parameter is true.
+	 */
+	function selectFile(contentType, multiple) {
+		return new Promise(resolve => {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.multiple = multiple;
+			input.accept = contentType;
+
+			input.onchange = () => {
+				const files = Array.from(input.files);
+				if (multiple)
+					resolve(files);
+				else
+					resolve(files[0]);
+			};
+
+			input.click();
+		});
+	}
+
 	const deleteSound = (id) => {
-		setSoundsList(prevList =>
-			prevList.filter(sound => sound.id !== id)
-		);
+		soundsList.find(sound => sound.id === id).source.stop();
+		setSoundsList(prevList => prevList.filter(sound => sound.id !== id));
 	};
 
 	return (
