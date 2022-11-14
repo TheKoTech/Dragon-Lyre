@@ -6,6 +6,7 @@ kanban-plugin: basic
 
 ## ### Общие
 
+- [ ] Подготовить большой датасет с различными звуками<br>@{2022-11-15}
 
 
 ## ### <div style='color: #297bff'>Задачи Вовы</div>
@@ -21,8 +22,7 @@ kanban-plugin: basic
 
 ## ### <div style='color: #f29500'>Задачи Димы</div>
 
-- [ ] Запуск одного звука <br><br>- [x] Воспроизведение звука из конкретного файла<br>- [x] Обработка исключений<br>- [ ] Тесты для метода<br>- [x] Переписать функцию, используя Web Audio API<br><br>@{2022-11-10}
-- [ ] Подготовить большой датасет с различными звуками<br>@{2022-11-15}
+- [ ] Добавить первые тесты для сцены<br><br>@{2022-11-17}
 - [ ] Изменение свойств звуков @{2022-12-08}
 - [ ] Подключение базы данных для хранения информации о сценах @{2022-12-11}
 - [ ] Исследовать готовые решения звуковых эффектов @{2022-12-19}
@@ -32,7 +32,8 @@ kanban-plugin: basic
 
 ## ### <div class='tasks_completed'>Завершено</div>
 
-- [ ] [[Интерфейс одной сцены в режиме воспроизведения]] <br><br>@{2022-11-10}
+- [ ] Запуск одного звука <br><br>- [x] Воспроизведение звука из конкретного файла<br>- [x] Обработка исключений<br>- [x] Переписать функцию, используя Web Audio API<br><br>@{2022-11-10}<br>#Дима
+- [ ] [[Интерфейс одной сцены в режиме воспроизведения]] <br><br>@{2022-11-10}<br>#Вова
 - [ ] Подготовить небольшую презентацию<br>@{2022-11-09}<br>#Вова
 - [ ] [График - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) <br>@{2022-11-07} @@{23:45}<br>#Вова
 - [ ] [Рефлексия - тимс](https://teams.microsoft.com/_#/school/tab::3717002657/19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2?threadId=19:fBnCvoy06PK9FkAOj7Sy_fQfIf5S1IJsYgyqLqjXE4s1@thread.tacv2&messageId=classroom&ctx=channel&isTeamLevelApp=true) <br>@{2022-11-07} @@{23:45}<br>#Дима
