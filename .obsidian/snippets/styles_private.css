@@ -1,9 +1,4 @@
-/*  */
-
-
 /* Этот файл существует только для меня. Не включай его. Здесь мои настройки, которые я бы хотел чтобы ты не трогал. */
-
-
 
 .theme-light .kanban-plugin {
 	--kanban-bg-lane-items: var(--color-base-00);
@@ -93,6 +88,7 @@ button.kanban-plugin__new-item-button {
 	border: none;
 	box-shadow: none;
 	height: 32px;
+	cursor: pointer;
 }
 
 button.kanban-plugin__new-item-button:hover {
@@ -147,6 +143,11 @@ div.kanban-plugin__item-wrapper {
 	padding: var(--column-padding);
 	background: var(--kanban-bg-lane-items);
 }
+
+.kanban-plugin .clickable-icon {
+	cursor: pointer;
+}
+
 
 .kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata {
 	padding-top: 8px;
