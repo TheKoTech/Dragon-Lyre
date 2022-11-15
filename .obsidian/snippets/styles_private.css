@@ -150,8 +150,12 @@ div.kanban-plugin__item-wrapper {
 
 
 .kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata {
-	padding-top: 8px;
 	width: fit-content;
+	padding-top: 0;
+}
+
+.kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata > span:first-child {
+	padding-top: 8px;
 }
 
 .kanban-plugin__item-content-wrapper .kanban-plugin__item-metadata>.kanban-plugin__item-metadata-date-wrapper.has-background {
