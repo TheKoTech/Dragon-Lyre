@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
 
@@ -14,22 +13,29 @@ function Scene({ audioContext }) {
 		const sound = soundsList[id];
 		if (sound.source !== undefined)
 			sound.source.stop();
-		sound.source = playSound(sound.buffer);
+
+		const [source, gain] = playSound(sound.buffer);
+		sound.source = source;
+		sound.gain = gain;
+
 		sound.source.loop = sound.isLooped;
+		sound.gain.gain.value = sound.volume / 100;
 	};
 
 	/**
 	 * Creates audio source (thread) and starts it.
 	 * @param {AudioBuffer} audioBuffer
-	 * @returns {AudioBufferSourceNode}
+	 * @returns {[AudioBufferSourceNode, GainNode]}
 	 */
 	function playSound(audioBuffer) {
 		const source = audioContext.createBufferSource();
+		const gain = audioContext.createGain();
 		source.buffer = audioBuffer;
-		source.connect(audioContext.destination);
+		source.connect(gain);
+		gain.connect(audioContext.destination);
 		source.start();
 
-		return source;
+		return [source, gain];
 	}
 
 	/**
@@ -52,14 +58,15 @@ function Scene({ audioContext }) {
 	 * @param {number} id
 	 */
 	const handleVolumeChange = (e, id) => {
+		if (soundsList[id].gain !== undefined)
+			soundsList[id].gain.gain.value = e.target.value / 100;
+
 		setSoundsList((prevList) => {
-			const newList = prevList.map(sound => {
+			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, volume: e.target.value }
 					: sound;
 			});
-			console.log(`Sound ${ id } { volume: ${ newList[id].volume } }`);
-			return newList;
 		});
 	};
 
@@ -68,14 +75,14 @@ function Scene({ audioContext }) {
 	 * @param {number} id
 	 */
 	const handleLoopedChange = (e, id) => {
+		soundsList[id].source.loop = e.target.checked;
+
 		setSoundsList((prevList) => {
-			const newList = prevList.map(sound => {
+			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, isLooped: e.target.checked }
 					: sound;
 			});
-			console.log(`Sound ${ id } { isLooped: ${ newList[id].isLooped } }`);
-			return newList;
 		});
 	};
 
@@ -96,22 +103,23 @@ function Scene({ audioContext }) {
 	/**
 	 * Start play sound. Creates an object Sound and add it to the Scene.
 	 * @param {String} soundName
-	 * @param {AudioBuffer} audioBuffer
+	 * @param {AudioBuffer} buffer
 	 */
-	function addSoundInSoundList(soundName, audioBuffer) {
-		const audioSource = playSound(audioBuffer);
-		audioSource.loop = true;
+	function addSoundInSoundList(soundName, buffer) {
+		const [source, gain] = playSound(buffer);
+		source.loop = false;
+		gain.gain.value = 0.5;
 
 		setSoundsList([
 			...soundsList,
 			{
 				id: getNewSoundId(),
 				title: soundName,
-				isPlayed: false,
-				isLooped: true,
-				volume: 50,
-				buffer: audioBuffer,
-				source: audioSource,
+				isLooped: source.loop,
+				volume: gain.gain.value * 100,
+				buffer: buffer,
+				source: source,
+				gain: gain,
 			}
 		]);
 	}
