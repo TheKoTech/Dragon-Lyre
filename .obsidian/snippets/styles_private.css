@@ -1,16 +1,22 @@
 /* Этот файл существует только для меня. Не включай его. Здесь мои настройки, которые я бы хотел чтобы ты не трогал. */
 
-.theme-light .kanban-plugin {
+.theme-light .kanban-plugin,
+.theme-light .kanban-plugin__drag-container {
 	--kanban-bg-lane-items: var(--color-base-00);
+}
+
+.theme-light .kanban-plugin {
 	background: #eee;
 	border-top: var(--color-base-30) 1px solid;
 }
 
-.theme-dark .kanban-plugin {
+.theme-dark .kanban-plugin,
+.theme-dark .kanban-plugin__drag-container {
 	--kanban-bg-lane-items: var(--color-base-25);
 }
 
-div.kanban-plugin {
+div.kanban-plugin,
+.kanban-plugin__drag-container {
 	--lane-width: 310px;
 	--column-padding: 7px 5px 7px 15px;
 }
@@ -139,9 +145,14 @@ div.kanban-plugin__item-wrapper {
 	border: none;
 }
 
-.kanban-plugin__item-title-wrapper {
+.kanban-plugin__item-title-wrapper, 
+.kanban-plugin__item-title-wrapper .kanban-plugin__drag-container {
 	padding: var(--column-padding);
 	background: var(--kanban-bg-lane-items);
+}
+
+.kanban-plugin__drag-container > .kanban-plugin__item-wrapper .kanban-plugin__item {
+	box-shadow: 0 0 0 2px hsl(var(--interactive-accent-hsl)), var(--shadow-s);
 }
 
 .kanban-plugin .clickable-icon {
