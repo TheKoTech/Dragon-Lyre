@@ -18,7 +18,8 @@
 	row-gap: 5px;
 	border-radius: 5px;
 	border: 1px solid #000;
-	flex-basis: 100px;
+	flex-shrink: 1;
+	flex-basis: 200px;
 }
 
 .sound_title {
@@ -54,12 +55,20 @@
 	display: block;
 }
 
+.sound .sound_title input {
+	border: none;
+	background: none;
+}
+
+.sound .sound_title input:focus {
+	outline: none;
+}
+
 .sound_add_btn {
 	background: #eee;
 	padding: 5px 15px;
 	border-radius: 5px;
 	border: 1px solid #000;
-	flex-basis: 100px;
 }
 
 .sound_add_btn p {

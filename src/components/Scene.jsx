@@ -6,6 +6,16 @@ import SoundAddBtn from './SoundAddBtn';
 function Scene({ audioContext }) {
 	const [soundsList, setSoundsList] = useState([]);
 
+	const handleSoundTitleChange = (e, id) => {
+		setSoundsList((prevList) => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, title: e.target.value }
+					: sound;
+			});
+		});
+	}
+
 	/**
 	 * @param {number} id
 	 */
@@ -86,6 +96,17 @@ function Scene({ audioContext }) {
 		});
 	};
 
+	const handleIntervalChange = (e, id) => {
+		setSoundsList((prevList) => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, interval: e.target.value }
+					: sound;
+			});
+		});
+		console.log(soundsList[id].interval);
+	}
+
 	const addSound = () => {
 		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
 	};
@@ -117,6 +138,7 @@ function Scene({ audioContext }) {
 				title: soundName,
 				isLooped: source.loop,
 				volume: gain.gain.value * 100,
+				interval: 5,
 				buffer: buffer,
 				source: source,
 				gain: gain,
@@ -176,13 +198,15 @@ function Scene({ audioContext }) {
 					<Sound
 						key={ props.id }
 						{ ...props }
+						onTitleChange={ handleSoundTitleChange }
 						onPlayBtn={ handlePlayBtn }
 						onVolumeChange={ handleVolumeChange }
 						onLoopedChange={ handleLoopedChange }
+						onIntervalChange={ handleIntervalChange }
 						onDelete={ deleteSound }
 					/>
 				) }
-				<SoundAddBtn onClick={ addSound }/>
+				<SoundAddBtn onClick={ addSound } />
 			</div>
 		</div>
 	);

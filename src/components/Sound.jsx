@@ -1,40 +1,50 @@
 import React from 'react'
 
 
-function Sound({ 
-	id, title, isPlayed, isLooped, volume, 
-	onPlayBtn, onVolumeChange, onLoopedChange, onDelete 
+function Sound({
+	id, title, isPlayed, isLooped, volume, interval,
+	onTitleChange, onPlayBtn, onVolumeChange, onLoopedChange, onIntervalChange, onDelete
 }) {
 	return (
 		<span className='sound'>
 			<div className="sound_title">
-				<h2>
-				{title}
-				</h2>
-				<a className='close_btn' onClick={() => onDelete(id)}>
+				<input
+					type='text'
+					value={ title }
+					onChange={ e => onTitleChange(e, id) }
+				/>
+				<a className='close_btn' onClick={ () => onDelete(id) }>
 					X
 				</a>
 			</div>
 			<input
 				className='play_btn'
 				type='button'
-				value={isPlayed ? 'Stop' : 'Play'}
-				onClick={() => onPlayBtn(id)}
+				value={ isPlayed ? 'Stop' : 'Play' }
+				onClick={ () => onPlayBtn(id) }
 			/>
 			<input
 				type='range'
-				min={0}
-				max={100}
+				min={ 0 }
+				max={ 100 }
 				className='volume_slider'
-				value={volume}
-				onChange={e => onVolumeChange(e, id)}
+				value={ volume }
+				onChange={ e => onVolumeChange(e, id) }
 			/>
 			<input
 				type="checkbox"
 				className='loop_checkbox'
-				checked={isLooped}
-				onChange={e => onLoopedChange(e, id)}
+				checked={ isLooped }
+				onChange={ e => onLoopedChange(e, id) }
 			/>
+			<label>
+				interval:
+			</label>
+			<input
+				type="text"
+				className='interval-input'
+				value={ interval }
+				onChange={ e => onIntervalChange(e, id) } />
 		</span>
 	)
 }
