@@ -144,7 +144,7 @@ div.kanban-plugin__item-wrapper {
 .kanban-plugin__item {
 	border: none;
 }
-
+	
 .kanban-plugin__item-title-wrapper, 
 .kanban-plugin__item-title-wrapper .kanban-plugin__drag-container {
 	padding: var(--column-padding);
