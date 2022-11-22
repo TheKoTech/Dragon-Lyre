@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 
 function Sound({
-	id, title, isPlayed, isLooped, volume, interval,
-	onTitleChange, onPlayBtn, onVolumeChange, onLoopedChange, onIntervalChange, onDelete
-}) {
+	               id, title, isPlayed, isLooped, volume, interval,
+	               onTitleChange, onPlayBtn, onVolumeChange, onLoopedChange, onIntervalChange, onDelete
+               }) {
 	return (
 		<span className='sound'>
-			<div className="sound_title">
+			<div className='sound_title'>
 				<input
 					type='text'
 					value={ title }
@@ -25,14 +25,15 @@ function Sound({
 			/>
 			<input
 				type='range'
-				min={ 0 }
-				max={ 100 }
+				min={ 0.0 }
+				max={ 1.0 }
+				step={ 0.01 }
 				className='volume_slider'
 				value={ volume }
 				onChange={ e => onVolumeChange(e, id) }
 			/>
 			<input
-				type="checkbox"
+				type='checkbox'
 				className='loop_checkbox'
 				checked={ isLooped }
 				onChange={ e => onLoopedChange(e, id) }
@@ -41,12 +42,12 @@ function Sound({
 				interval:
 			</label>
 			<input
-				type="text"
+				type='text'
 				className='interval-input'
 				value={ interval }
-				onChange={ e => onIntervalChange(e, id) } />
+				onChange={ e => onIntervalChange(e, id) }/>
 		</span>
-	)
+	);
 }
 
-export default Sound
+export default Sound;
