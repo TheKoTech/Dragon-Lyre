@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SceneSidebar } from './SceneSidebar';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
 
@@ -51,7 +52,7 @@ function Scene({ audioContext }) {
 	/**
 	 * Decodes audio data from the file and creates audio buffer.
 	 * @param {String} filePath The path must contain the file extension.
-	 * @returns {Promise<AudioBuffer>} A promise of a sound buffer.
+	 * @returns {Promise<AudioBuffer>}
 	 */
 	async function setupSound(filePath) {
 		return await getAudioBufferFromFile(filePath);
@@ -191,8 +192,7 @@ function Scene({ audioContext }) {
 
 	return (
 		<div className='scene'>
-			Scene component
-
+			<SceneSidebar />
 			<div className='sounds_list'>
 				{ soundsList.map((props) =>
 					<Sound

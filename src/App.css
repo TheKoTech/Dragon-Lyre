@@ -1,8 +1,19 @@
 .scene {
-	padding: 20px 50px;
+	display: flex;
+	align-items: flex-start;
+}
+
+.sidebar {
+	width: 270px;
+	height: 100vh;
+}
+
+.sidebar__content {
+	padding: 12px 20px;
 }
 
 .sounds_list {
+	padding: 12px 20px;
 	display: flex;
 	flex-wrap: wrap;
 	column-width: 200px;
@@ -86,4 +97,12 @@
 
 .sound_add_btn p::selection {
 	display: none;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+	margin-top: 0;
+}
+
+h1:has(+p){
+	margin-bottom: 0;
 }
