@@ -11,11 +11,11 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, title: e.target.value }
-					: sound;
+						? { ...sound, title: e.target.value }
+						: sound;
 			});
 		});
-	}
+	};
 
 	/**
 	 * @param {number} id
@@ -26,11 +26,11 @@ function Scene({ audioContext }) {
 			sound.source.stop();
 
 		const [source, gain] = playSound(sound.buffer);
+		gain.gain.value = sound.volume;
+		source.onended = sound.source.onended;
+
 		sound.source = source;
 		sound.gain = gain;
-
-		sound.source.loop = sound.isLooped;
-		sound.gain.gain.value = sound.volume / 100;
 	};
 
 	/**
@@ -40,13 +40,13 @@ function Scene({ audioContext }) {
 	 */
 	function playSound(audioBuffer) {
 		const source = audioContext.createBufferSource();
-		const gain = audioContext.createGain();
+		const gainNode = audioContext.createGain();
 		source.buffer = audioBuffer;
-		source.connect(gain);
-		gain.connect(audioContext.destination);
+		source.connect(gainNode);
+		gainNode.connect(audioContext.destination);
 		source.start();
 
-		return [source, gain];
+		return [source, gainNode];
 	}
 
 	/**
@@ -70,13 +70,13 @@ function Scene({ audioContext }) {
 	 */
 	const handleVolumeChange = (e, id) => {
 		if (soundsList[id].gain !== undefined)
-			soundsList[id].gain.gain.value = e.target.value / 100;
+			soundsList[id].gain.gain.value = e.target.value;
 
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, volume: e.target.value }
-					: sound;
+						? { ...sound, volume: e.target.value }
+						: sound;
 			});
 		});
 	};
@@ -86,13 +86,11 @@ function Scene({ audioContext }) {
 	 * @param {number} id
 	 */
 	const handleLoopedChange = (e, id) => {
-		soundsList[id].source.loop = e.target.checked;
-
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, isLooped: e.target.checked }
-					: sound;
+						? { ...sound, isLooped: e.target.checked }
+						: sound;
 			});
 		});
 	};
@@ -101,64 +99,16 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, interval: e.target.value }
-					: sound;
+						? { ...sound, interval: e.target.value }
+						: sound;
 			});
 		});
 		console.log(soundsList[id].interval);
-	}
+	};
 
 	const addSound = () => {
 		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
 	};
-
-	/**
-	 * Initialize AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
-	 * @param {File} file
-	 */
-	function setupSoundAndAddInSoundList(file) {
-		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
-		const filePath = '/sounds/' + file.name;
-		setupSound(filePath).then(audioBuffer => addSoundInSoundList(soundName, audioBuffer));
-	}
-
-	/**
-	 * Start play sound. Creates an object Sound and add it to the Scene.
-	 * @param {String} soundName
-	 * @param {AudioBuffer} buffer
-	 */
-	function addSoundInSoundList(soundName, buffer) {
-		const [source, gain] = playSound(buffer);
-		source.loop = false;
-		gain.gain.value = 0.5;
-
-		setSoundsList([
-			...soundsList,
-			{
-				id: getNewSoundId(),
-				title: soundName,
-				isLooped: source.loop,
-				volume: gain.gain.value * 100,
-				interval: 5,
-				buffer: buffer,
-				source: source,
-				gain: gain,
-			}
-		]);
-	}
-
-	/**
-	 * Returns max sound ID + 1.
-	 * @returns {number}
-	 */
-	function getNewSoundId() {
-		let id;
-		if (soundsList.length === 0)
-			id = 0;
-		else
-			id = Math.max(...soundsList.map(sound => sound.id)) + 1;
-		return id;
-	}
 
 	/**
 	 * Select file(s).
@@ -185,30 +135,80 @@ function Scene({ audioContext }) {
 		});
 	}
 
+	/**
+	 * Initialize AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
+	 * @param {File} file
+	 */
+	function setupSoundAndAddInSoundList(file) {
+		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
+		const filePath = '/sounds/' + file.name;
+		setupSound(filePath).then(audioBuffer => addSoundInSoundList(soundName, audioBuffer));
+	}
+
+	/**
+	 * Starts a sound and then creates an object Sound and add it to the Scene.
+	 * @param {String} soundName
+	 * @param {AudioBuffer} buffer A buffer containing audio information.
+	 */
+	function addSoundInSoundList(soundName, buffer) {
+		const [source, gain] = playSound(buffer);
+		gain.gain.value = 0.5;
+
+		setSoundsList([
+			...soundsList,
+			{
+				id: getNewSoundId(),
+				title: soundName,
+				volume: gain.gain.value,
+				minInterval: 0,
+				maxInterval: 6,
+				buffer: buffer,
+				source: source,
+				gain: gain,
+				audioContext: audioContext,
+			}
+		]);
+	}
+
+	/**
+	 * Returns max sound ID + 1.
+	 * @returns {number}
+	 */
+	function getNewSoundId() {
+		let id;
+		if (soundsList.length === 0)
+			id = 0;
+		else
+			id = Math.max(...soundsList.map(sound => sound.id)) + 1;
+		return id;
+	}
+
 	const deleteSound = (id) => {
-		soundsList.find(sound => sound.id === id).source.stop();
+		const sound = soundsList.find(sound => sound.id === id);
+		sound.source.stop();
+		sound.source.disconnect();
 		setSoundsList(prevList => prevList.filter(sound => sound.id !== id));
 	};
 
 	return (
-		<div className='scene'>
-			<SceneSidebar />
-			<div className='sounds_list'>
-				{ soundsList.map((props) =>
-					<Sound
-						key={ props.id }
-						{ ...props }
-						onTitleChange={ handleSoundTitleChange }
-						onPlayBtn={ handlePlayBtn }
-						onVolumeChange={ handleVolumeChange }
-						onLoopedChange={ handleLoopedChange }
-						onIntervalChange={ handleIntervalChange }
-						onDelete={ deleteSound }
-					/>
-				) }
-				<SoundAddBtn onClick={ addSound } />
+			<div className='scene'>
+				<SceneSidebar/>
+				<div className='sounds_list'>
+					{ soundsList.map((props) =>
+							<Sound
+									key={ props.id }
+									{ ...props }
+									onTitleChange={ handleSoundTitleChange }
+									onPlayBtn={ handlePlayBtn }
+									onVolumeChange={ handleVolumeChange }
+									onLoopedChange={ handleLoopedChange }
+									onIntervalChange={ handleIntervalChange }
+									onDelete={ deleteSound }
+							/>
+					) }
+					<SoundAddBtn onClick={ addSound }/>
+				</div>
 			</div>
-		</div>
 	);
 }
 
