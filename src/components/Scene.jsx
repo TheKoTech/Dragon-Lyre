@@ -11,8 +11,8 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-						? { ...sound, title: e.target.value }
-						: sound;
+					? { ...sound, title: e.target.value }
+					: sound;
 			});
 		});
 	};
@@ -75,8 +75,8 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-						? { ...sound, volume: e.target.value }
-						: sound;
+					? { ...sound, volume: e.target.value }
+					: sound;
 			});
 		});
 	};
@@ -89,8 +89,8 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-						? { ...sound, isLooped: e.target.checked }
-						: sound;
+					? { ...sound, isLooped: e.target.checked }
+					: sound;
 			});
 		});
 	};
@@ -99,8 +99,8 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-						? { ...sound, interval: e.target.value }
-						: sound;
+					? { ...sound, interval: e.target.value }
+					: sound;
 			});
 		});
 		console.log(soundsList[id].interval);
@@ -191,24 +191,24 @@ function Scene({ audioContext }) {
 	};
 
 	return (
-			<div className='scene'>
-				<SceneSidebar/>
-				<div className='sounds_list'>
-					{ soundsList.map((props) =>
-							<Sound
-									key={ props.id }
-									{ ...props }
-									onTitleChange={ handleSoundTitleChange }
-									onPlayBtn={ handlePlayBtn }
-									onVolumeChange={ handleVolumeChange }
-									onLoopedChange={ handleLoopedChange }
-									onIntervalChange={ handleIntervalChange }
-									onDelete={ deleteSound }
-							/>
-					) }
-					<SoundAddBtn onClick={ addSound }/>
-				</div>
+		<div className='scene'>
+			<SceneSidebar />
+			<div className='sounds_list'>
+				{ soundsList.map((props) =>
+					<Sound
+						key={ props.id }
+						{ ...props }
+						onTitleChange={ handleSoundTitleChange }
+						onPlayBtn={ handlePlayBtn }
+						onVolumeChange={ handleVolumeChange }
+						onLoopedChange={ handleLoopedChange }
+						onIntervalChange={ handleIntervalChange }
+						onDelete={ deleteSound }
+					/>
+				) }
+				<SoundAddBtn onClick={ addSound } />
 			</div>
+		</div>
 	);
 }
 

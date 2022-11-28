@@ -1,0 +1,11 @@
+.sidebar-sound {
+	padding: 10px 20px;
+	background: var(--clr-base-20);
+	border-radius: 10px;
+	border: 1px solid var(--clr-border);
+}
+
+.sidebar-sound h3 {
+	font-weight: normal;
+	letter-spacing: .01em;
+}

@@ -1,0 +1,54 @@
+.sound {
+	display: flex;
+	background: var(--clr-base-20);
+	padding: 5px 15px 10px 15px;
+	flex-direction: column;
+	row-gap: 5px;
+	border-radius: 5px;
+	border: 1px solid var(--clr-border);
+	flex-shrink: 1;
+	flex-basis: 200px;
+}
+
+.sound_title {
+	display: flex;
+	justify-content: space-between;
+}
+
+.sound h2 {
+	font-size: 1.2em;
+	margin: 0;
+}
+
+.sound .close_btn {
+	padding: 0 6px;
+	background: transparent;
+	border-radius: 5px;
+}
+
+.sound .close_btn:hover {
+	background: var(--clr-border);
+	cursor: pointer;
+}
+
+.sound .close_btn::selection {
+	display: none;
+}
+
+.sound .play_btn {
+	display: block;
+}
+
+.sound .play_btn {
+	display: block;
+}
+
+.sound .sound_title input {
+	border: none;
+	background: none;
+	color: var(--text-normal);
+}
+
+.sound .sound_title input:focus {
+	outline: none;
+}

@@ -3,15 +3,6 @@
 	align-items: flex-start;
 }
 
-.sidebar {
-	width: 270px;
-	height: 100vh;
-}
-
-.sidebar__content {
-	padding: 12px 20px;
-}
-
 .sounds_list {
 	padding: 12px 20px;
 	display: flex;
@@ -21,65 +12,11 @@
 	row-gap: 5px;
 }
 
-.sound {
-	display: flex;
-	background: #eee;
-	padding: 5px 15px;
-	flex-direction: column;
-	row-gap: 5px;
-	border-radius: 5px;
-	border: 1px solid #000;
-	flex-shrink: 1;
-	flex-basis: 200px;
-}
-
-.sound_title {
-	display: flex;
-	justify-content: space-between;
-}
-
-.sound h2 {
-	font-size: 1em;
-	margin: 0;
-}
-
-.sound .close_btn {
-	padding: 0 6px;
-	background: transparent;
-	border-radius: 5px;
-}
-
-.sound .close_btn:hover {
-	background: rgba(0, 0, 0, .2);
-	cursor: pointer;
-}
-
-.sound .close_btn::selection {
-	display: none;
-}
-
-.sound .play_btn {
-	display: block;
-}
-
-.sound .play_btn {
-	display: block;
-}
-
-.sound .sound_title input {
-	border: none;
-	background: none;
-}
-
-.sound .sound_title input:focus {
-	outline: none;
-}
-
 .sound_add_btn {
-	background: #eee;
+	background: var(--clr-base-20);
 	padding: 5px 15px;
 	border-radius: 5px;
-	border: 1px solid #000;
+	border: 1px solid var(--clr-border);
 }
 
 .sound_add_btn p {
@@ -87,12 +24,12 @@
 }
 
 .sound_add_btn:hover {
-	background: #ddd;
+	background: var(--clr-base-25);
 	cursor: pointer;
 }
 
 .sound_add_btn:active {
-	background: #ccc;
+	background: var(--clr-base-30);
 }
 
 .sound_add_btn p::selection {
@@ -100,9 +37,5 @@
 }
 
 :is(h1, h2, h3, h4, h5, h6) {
-	margin-top: 0;
-}
-
-h1:has(+p){
-	margin-bottom: 0;
+	margin: 0;
 }

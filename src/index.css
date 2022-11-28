@@ -1,13 +1,33 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+	font-family: Nunito;
+	src: url('./resources/Nunito-VariableFont_wght.ttf');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+	font-family: Nunito;
+	src: url('./resources/Nunito-Italic-VariableFont_wght.ttf');
+	font-style: italic;
+}
+
+
+body {
+  margin: 0;
+	font-family: Nunito;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	color: var(--clr-text-normal);
+	background: var(--clr-base-00);
+
+	--clr-base-00: rgb(29 29 29);
+	--clr-base-10: rgb(37 37 37);
+	--clr-base-20: rgb(46 46 46);
+	--clr-base-25: rgb(58 58 58);
+	--clr-base-30: rgb(74 74 74);
+	--clr-base-35: rgb(99 99 99);
+	--clr-base-40: rgb(122 122 122);
+	--clr-base-60: rgb(198 198 198);
+	--clr-base-100: rgb(255 255 255);
+	--clr-text-normal: rgb(255 255 255);
+	--clr-red: rgb(255 69 69);
+	--clr-border: rgb(255 255 255 / .1);
 }

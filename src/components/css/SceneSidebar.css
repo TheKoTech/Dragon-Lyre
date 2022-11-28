@@ -1,0 +1,11 @@
+.sidebar {
+	background: var(--clr-base-10);
+	width: 270px;
+	height: 100vh;
+}
+
+.sidebar__content {
+	display: flex;
+	flex-direction: column;
+	padding: 12px 20px;
+}
