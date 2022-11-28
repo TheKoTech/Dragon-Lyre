@@ -283,23 +283,22 @@ function Scene({ audioContext }) {
 
 
 	return (
-			<div className='scene'>
-				<SceneSidebar/>
-				<div className='sounds_list'>
-					{ soundsList.map((props) =>
-							<Sound
-									key={ props.id }
-									{ ...props }
-									onTitleChange={ handleSoundTitleChange }
-									onPlayBtn={ handlePlayBtn }
-									onVolumeChange={ handleVolumeChange }
-									onIntervalChange={ handleIntervalChange }
-									onDelete={ handleDeleteBtn }
-									onEnded={ handleSoundEnd }
-							/>
-					) }
-					<SoundAddBtn onClick={ addSound }/>
-				</div>
+		<div className='scene'>
+			<SceneSidebar />
+			<div className='sounds_list'>
+				{ soundsList.map((props) =>
+					<Sound
+						key={ props.id }
+						{ ...props }
+						onTitleChange={ handleSoundTitleChange }
+						onPlayBtn={ handlePlayBtn }
+						onVolumeChange={ handleVolumeChange }
+						onIntervalChange={ handleIntervalChange }
+						onDelete={ handleDeleteBtn }
+						onEnded={ handleSoundEnd }
+					/>
+				) }
+				<SoundAddBtn onClick={ addSound } />
 			</div>
 		</div>
 	);
