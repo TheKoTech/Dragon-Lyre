@@ -43,7 +43,7 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handlePlayBtn = (id) => {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		if (sound.isPlaying)
 			stopSound(id);
@@ -57,14 +57,16 @@ function Scene({ audioContext }) {
 	 * @param {Boolean} disconnect If true then disconnect the source from the context.
 	 */
 	function stopSound(id, disconnect = false) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
-		sound.source.stop();
-		sound.isPlaying = false;
-		sound.stoppedAt = audioContext.currentTime;
-
-		if (disconnect)
-			sound.source.disconnect();
+		if (sound.source) {
+			if (disconnect)
+				sound.source.disconnect();
+			else
+				sound.source.stop();
+			sound.isPlaying = false;
+			sound.stoppedAt = audioContext.currentTime;
+		}
 	}
 
 	/**
@@ -74,7 +76,7 @@ function Scene({ audioContext }) {
 	 * @param {number} offset
 	 */
 	function startSound(id, when = 0, offset = 0) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		addToSoundNewSourceAndGain(id);
 
@@ -97,7 +99,7 @@ function Scene({ audioContext }) {
 	 * @param id Sound ID.
 	 */
 	function addToSoundNewSourceAndGain(id) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		const [sourceNode, gainNode] = createSourceAndGainFromAudioBuffer(sound.buffer);
 		applySettingsFromSoundToSourceAndGain(id, sourceNode, gainNode);
@@ -126,7 +128,7 @@ function Scene({ audioContext }) {
 	 * @param {GainNode} gainNode The following sound fields will be transferred: value.
 	 */
 	function applySettingsFromSoundToSourceAndGain(id, sourceNode, gainNode) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		if (sound.source && sound.gainNode) {
 			gainNode.gain.value = sound.volume;
@@ -141,7 +143,7 @@ function Scene({ audioContext }) {
 	 * @param {GainNode} gainNode
 	 */
 	function attachSourceAndGainToSound(id, sourceNode, gainNode) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		sound.source = sourceNode;
 		sound.gainNode = gainNode;
@@ -155,8 +157,9 @@ function Scene({ audioContext }) {
 	 * @param {number} id
 	 */
 	const handleVolumeChange = (e, id) => {
-		if (soundsList[id].gainNode)
-			soundsList[id].gainNode.gain.value = e.target.value;
+		const sound = soundsList.find(sound => sound.id === id);
+		if (sound.gainNode)
+			sound.gainNode.gain.value = e.target.value;
 
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
@@ -171,7 +174,7 @@ function Scene({ audioContext }) {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, interval: e.target.value }
+					? { ...sound, maxInterval: e.target.value }
 					: sound;
 			});
 		});
@@ -183,7 +186,8 @@ function Scene({ audioContext }) {
 
 	/**
 	 * Select file(s).
-	 * @param {string} contentType The files you wish to select. For instance, use "image/*" to select all types of images.
+	 * @param {string} contentType The files you wish to select. For instance, use "image/*" to select all types of
+	 *     images.
 	 * @param {Boolean} multiple Indicates if the user can select multiple files.
 	 * @returns {Promise<File|File[]>} A promise of a file or array of files if the multiple parameter is true.
 	 */
@@ -274,7 +278,7 @@ function Scene({ audioContext }) {
 	 * @param {number} when The time, in seconds (attached to AudioContext), at which the sound should start playing.
 	 */
 	function handleSoundEnd(id, when = 0) {
-		const sound = soundsList[id];
+		const sound = soundsList.find(sound => sound.id === id);
 
 		if (sound.isPlaying) {
 			startSound(id, when);
@@ -284,7 +288,7 @@ function Scene({ audioContext }) {
 
 	return (
 		<div className='scene'>
-			<SceneSidebar />
+			<SceneSidebar/>
 			<div className='sounds_list'>
 				{ soundsList.map((props) =>
 					<Sound
@@ -298,7 +302,7 @@ function Scene({ audioContext }) {
 						onEnded={ handleSoundEnd }
 					/>
 				) }
-				<SoundAddBtn onClick={ addSound } />
+				<SoundAddBtn onClick={ addSound }/>
 			</div>
 		</div>
 	);
