@@ -1,0 +1,10 @@
+.icon-button {
+	display: flex;
+	padding: 4px;
+	border-radius: 5px;
+}
+
+.icon-button:hover {
+	background-color: var(--clr-highlight);
+	cursor: pointer;
+}

@@ -1,0 +1,14 @@
+.scene {
+	display: flex;
+	align-items: flex-start;
+}
+
+.sounds_list {
+	padding: 12px 20px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-basis: 240px;
+	width: 100%;
+	column-gap: 5px;
+	row-gap: 5px;
+}

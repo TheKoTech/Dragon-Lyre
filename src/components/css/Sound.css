@@ -15,9 +15,14 @@
 	justify-content: space-between;
 }
 
-.sound h2 {
-	font-size: 1.2em;
-	margin: 0;
+.sound_title>input {
+	font-size: var(--font-size-h3);
+
+}
+
+.sound input {
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .sound .close_btn {
@@ -29,10 +34,6 @@
 .sound .close_btn:hover {
 	background: var(--clr-border);
 	cursor: pointer;
-}
-
-.sound .close_btn::selection {
-	display: none;
 }
 
 .sound .play_btn {

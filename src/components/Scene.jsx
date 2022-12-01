@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SceneSidebar } from './SceneSidebar';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
+import './css/Scene.css'
 
 /**
  * @param {Object} Scene
