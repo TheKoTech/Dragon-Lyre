@@ -30,4 +30,21 @@ body {
 	--clr-text-normal: rgb(255 255 255);
 	--clr-red: rgb(255 69 69);
 	--clr-border: rgb(255 255 255 / .1);
+	--clr-highlight: rgb(255 255 255 / .1);
+
+	--font-size-h1: 1.75em;
+	--font-size-h2: 1.375em;
+	--font-size-h3: 1.125em;
+}
+
+h1 {
+	font-size: var(--font-size-h1);
+}
+
+h2 {
+	font-size: var(--font-size-h2);
+}
+
+h3 {
+	font-size: var(--font-size-h3);
 }

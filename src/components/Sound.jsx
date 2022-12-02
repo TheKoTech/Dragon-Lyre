@@ -1,3 +1,6 @@
+import './css/Sound.css'
+import { IconButton } from './IconButton';
+
 /**
  * @param {Object} Sound
  * @param {number} Sound.id
@@ -30,16 +33,8 @@ function Sound({
 					value={ title }
 					onChange={ e => onTitleChange(e, id) }
 				/>
-				<a className='close_btn' onClick={ () => onDelete(id) }>
-					X
-				</a>
+				<IconButton iconName={ 'Options' } onClick={ e => { onDelete(e) } } />
 			</div>
-			<input
-					className='play_btn'
-					type='button'
-					value='Play'
-					onClick={ () => onPlayBtn(id) }
-			/>
 			<input
 				type='range'
 				min={ 0.0 }
@@ -53,17 +48,17 @@ function Sound({
 				min interval:
 			</label>
 			<input
-					type='number'
-					className='min-interval-input'
-					defaultValue={ minInterval }/>
+				type='number'
+				className='min-interval-input'
+				defaultValue={ minInterval } />
 			<label>
 				max interval:
 			</label>
 			<input
-					type='number'
-					className='max-interval-input'
-					value={ maxInterval }
-					onChange={ e => onIntervalChange(e, id) }/>
+				type='number'
+				className='max-interval-input'
+				value={ maxInterval }
+				onChange={ e => onIntervalChange(e, id) } />
 		</span>
 	);
 }
