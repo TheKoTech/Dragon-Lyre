@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Icons from '../resources/icons'
+import * as Icons from '../assets/icons'
 import './css/IconButton.css'
 
 export const IconButton = ({ iconName, label, onClick }) => {
