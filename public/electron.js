@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
 
 function createWindow() {
@@ -6,7 +6,6 @@ function createWindow() {
 		minWidth: 800,
 		minHeight: 600,
 		webPreferences: {
-			autoHideMenuBar: true,
 			// Set the path of an additional "preload" script that can be used to
 			// communicate between node-land and browser-land.
 			preload: path.join(__dirname, 'preload.js'),
@@ -14,13 +13,26 @@ function createWindow() {
 			devTools: true // Must be disabled before build the project.
 		}
 	});
+	mainWindow.removeMenu();
+	registerGlobalShortcuts(mainWindow);
 
-	if (app.isPackaged)
+
+	if (app.isPackaged) {
 		mainWindow.loadFile(path.resolve(__dirname, 'index.html'));
-	else
+	} else {
 		mainWindow.loadURL('http://localhost:3000');
-
+		mainWindow.webContents.openDevTools({ mode: 'detach' });
+	}
 	return mainWindow;
+}
+
+function registerGlobalShortcuts(mainWindow) {
+	globalShortcut.register('F5', () => {
+		mainWindow.reload();
+	});
+	globalShortcut.register('CommandOrControl+R', () => {
+		mainWindow.reload();
+	});
 }
 
 // This method will be called when Electron has finished its initialization and
@@ -47,16 +59,15 @@ app.on('window-all-closed', () => {
 	}
 });
 
-// If your app has no need to navigate or only needs to navigate to known pages,
-// it is a good idea to limit navigation outright to that known scope,
-// disallowing any other kinds of navigation.
-const allowedNavigationDestinations = 'https://my-electron-app.com';
-app.on('web-contents-created', (event, contents) => {
-	contents.on('will-navigate', (event, navigationUrl) => {
-		const parsedUrl = new URL(navigationUrl);
 
-		if (!allowedNavigationDestinations.includes(parsedUrl.origin)) {
-			event.preventDefault();
-		}
+// Handlers
+
+ipcMain.handle('app:get-files-from-folder', (event, folder) => {
+	const fs = require('fs');
+
+	const files = [];
+	fs.readdirSync(folder).forEach(file => {
+		files.push(file);
 	});
+	return files;
 });
