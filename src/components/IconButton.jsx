@@ -1,9 +1,8 @@
-import React from 'react'
-import * as Icons from '../assets/icons'
-import './css/IconButton.css'
+import React from 'react';
+import * as Icons from '../assets/icons';
+import './css/IconButton.css';
 
 export const IconButton = ({ iconName, label, onClick }) => {
-	console.log(Icons[iconName]);
 	return (
 		<span
 			onClick={ (e) => onClick(e) }
@@ -13,4 +12,4 @@ export const IconButton = ({ iconName, label, onClick }) => {
 			{ label ? <label>label</label> : '' }
 		</span>
 	);
-}
+};
