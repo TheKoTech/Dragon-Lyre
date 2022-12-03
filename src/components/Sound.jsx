@@ -1,5 +1,5 @@
-import './css/Sound.css'
 import { IconButton } from './IconButton';
+import './css/Sound.css'
 
 /**
  * @param {Object} Sound

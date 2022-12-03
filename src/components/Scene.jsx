@@ -2,28 +2,40 @@ import React, { useState } from 'react';
 import { SceneSidebar } from './SceneSidebar';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
-import './css/Scene.css'
 import { Toolbar } from './Toolbar';
+import './css/Scene.css'
 
 /**
  * @param {Object} Scene
  * @param {AudioContext} Scene.audioContext
  */
 function Scene({ audioContext }) {
+
+	// ========================================
+	// Types
+	// ========================================
+
+
 	/**
-	 * @typedef {Object} SoundParameters
-	 * @property {number} id
-	 * @property {string} title
-	 * @property {number} volume
-	 * @property {number | undefined} startedAt
-	 * @property {number | undefined} stoppedAt
-	 * @property {boolean} isPlaying
-	 * @property {number} minInterval
-	 * @property {number} maxInterval
-	 * @property {AudioBuffer} buffer
-	 * @property {GainNode | undefined} gainNode
-	 * @property {AudioBufferSourceNode | undefined} source
-	 */
+		 * @typedef {Object} SoundParameters
+		 * @property {number} id
+		 * @property {string} title
+		 * @property {number} volume
+		 * @property {number | undefined} startedAt
+		 * @property {number | undefined} stoppedAt
+		 * @property {boolean} isPlaying
+		 * @property {number} minInterval
+		 * @property {number} maxInterval
+		 * @property {AudioBuffer} buffer
+		 * @property {GainNode | undefined} gainNode
+		 * @property {AudioBufferSourceNode | undefined} source
+		 */
+
+
+	// ========================================
+	// State
+	// ========================================
+
 
 	/**
 	 * @type [SoundParameters[], Dispatch<SetStateAction<SoundParameters[]>>]
@@ -31,48 +43,14 @@ function Scene({ audioContext }) {
 	const soundState = useState([]);
 	const [soundsList, setSoundsList] = soundState;
 
-	const handleSoundTitleChange = (e, id) => {
-		setSoundsList((prevList) => {
-			return prevList.map(sound => {
-				return sound.id === id
-					? { ...sound, title: e.target.value }
-					: sound;
-			});
-		});
-	};
+
+	// ========================================
+	// Logic
+	// ========================================
+
 
 	/**
-	 * @param {number} id Sound ID.
-	 */
-	const handlePlayBtn = (id) => {
-		const sound = soundsList.find(sound => sound.id === id);
-
-		if (sound.isPlaying)
-			stopSound(id);
-		else
-			startSound(id);
-	};
-
-	/**
-	 * Stop the sound with the given ID.
-	 * @param {number} id Sound ID.
-	 * @param {Boolean} disconnect If true then disconnect the source from the context.
-	 */
-	function stopSound(id, disconnect = false) {
-		const sound = soundsList.find(sound => sound.id === id);
-
-		if (sound.source) {
-			if (disconnect)
-				sound.source.disconnect();
-			else
-				sound.source.stop();
-			sound.isPlaying = false;
-			sound.stoppedAt = audioContext.currentTime;
-		}
-	}
-
-	/**
-	 * Start the sound with the given ID.
+	 * Starts the sound with the given ID.
 	 * @param {number} id Sound ID.
 	 * @param {number} when
 	 * @param {number} offset
@@ -83,10 +61,11 @@ function Scene({ audioContext }) {
 		addToSoundNewSourceAndGain(id);
 
 		if (sound.stoppedAt) {
-			if (sound.stoppedAt - sound.startedAt >= 0)
+			if (sound.stoppedAt - sound.startedAt >= 0) {
 				offset = sound.stoppedAt - sound.startedAt;
-			else
+			} else {
 				when = sound.startedAt - sound.stoppedAt;
+			}
 		}
 		sound.source.start(audioContext.currentTime + when, offset);
 		sound.isPlaying = true;
@@ -94,6 +73,26 @@ function Scene({ audioContext }) {
 		sound.stoppedAt = undefined;
 	}
 
+	/**
+	 * Stops the sound with the given ID.
+	 * @param {number} id Sound ID.
+	 * @param {Boolean} disconnect If true, disconnects the source from the context.
+	 */
+	function stopSound(id, disconnect = false) {
+		const sound = soundsList.find(sound => sound.id === id);
+
+		if (sound.source) {
+			if (disconnect) {
+				sound.source.disconnect();
+			} else {
+				sound.source.stop();
+			}
+			sound.isPlaying = false;
+			sound.stoppedAt = audioContext.currentTime;
+		}
+	}
+
+	// todo: refactor
 	/**
 	 * Creates SourceNode and GainNode.
 	 * Transfers the settings from the sound with the given ID.
@@ -108,8 +107,9 @@ function Scene({ audioContext }) {
 		attachSourceAndGainToSound(id, sourceNode, gainNode);
 	}
 
+	// todo: refactor
 	/**
-	 * Creates audio source (thread) with gain and connect it to the context.
+	 * Creates audio source (thread) with gain and connects it to the context.
 	 * @param {AudioBuffer} audioBuffer
 	 * @returns {[AudioBufferSourceNode, GainNode]}
 	 */
@@ -123,6 +123,7 @@ function Scene({ audioContext }) {
 		return [sourceNode, gainNode];
 	}
 
+	// todo: refactor
 	/**
 	 * Must run before attaching to the sound.
 	 * @param {number} id Sound ID.
@@ -138,6 +139,7 @@ function Scene({ audioContext }) {
 		}
 	}
 
+	// todo: refactor
 	/**
 	 * Must run after applying the settings to the source and the gain.
 	 * @param {number} id Sound ID.
@@ -154,40 +156,33 @@ function Scene({ audioContext }) {
 		};
 	}
 
+	// todo: refactor
 	/**
-	 * @param {Event} e
-	 * @param {number} id
+ * Initializes AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
+ * @param {File} file
+ */
+	function setupSoundAndAddInSoundList(file) {
+		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
+		const filePath = '/sounds/' + file.name;
+		getAudioBufferFromFile(filePath).then(audioBuffer => {
+			addSoundInSoundList(soundName, audioBuffer);
+		});
+	}
+
+	/**
+	 * Decodes audio data from the file and creates audio buffer.
+	 * @param {string} filePath The path must contain the file extension.
+	 * @returns {Promise<AudioBuffer>}
 	 */
-	const handleVolumeChange = (e, id) => {
-		const sound = soundsList.find(sound => sound.id === id);
-		if (sound.gainNode)
-			sound.gainNode.gain.value = e.target.value;
+	async function getAudioBufferFromFile(filePath) {
+		const response = await fetch(filePath);
+		const arrayBuffer = await response.arrayBuffer();
+		return await audioContext.decodeAudioData(arrayBuffer);
+	}
 
-		setSoundsList((prevList) => {
-			return prevList.map(sound => {
-				return sound.id === id
-					? { ...sound, volume: e.target.value }
-					: sound;
-			});
-		});
-	};
-
-	const handleIntervalChange = (e, id) => {
-		setSoundsList((prevList) => {
-			return prevList.map(sound => {
-				return sound.id === id
-					? { ...sound, maxInterval: e.target.value }
-					: sound;
-			});
-		});
-	};
-
-	const addSound = () => {
-		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
-	};
-
+	// todo: remove this absolutely disgusting dumpster of a function
 	/**
-	 * Select file(s).
+	 * Opens a system dialog. 
 	 * @param {string} contentType The files you wish to select. For instance, use "image/*" to select all types of
 	 *     images.
 	 * @param {Boolean} multiple Indicates if the user can select multiple files.
@@ -213,29 +208,6 @@ function Scene({ audioContext }) {
 	}
 
 	/**
-	 * Initialize AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
-	 * @param {File} file
-	 */
-	function setupSoundAndAddInSoundList(file) {
-		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
-		const filePath = '/sounds/' + file.name;
-		getAudioBufferFromFile(filePath).then(audioBuffer => {
-			addSoundInSoundList(soundName, audioBuffer);
-		});
-	}
-
-	/**
-	 * Decodes audio data from the file and creates audio buffer.
-	 * @param {string} filePath The path must contain the file extension.
-	 * @returns {Promise<AudioBuffer>}
-	 */
-	async function getAudioBufferFromFile(filePath) {
-		const response = await fetch(filePath);
-		const arrayBuffer = await response.arrayBuffer();
-		return await audioContext.decodeAudioData(arrayBuffer);
-	}
-
-	/**
 	 * Starts a sound and then creates an object Sound and add it to the Scene.
 	 * @param {string} soundName
 	 * @param {AudioBuffer} audioBuffer A buffer containing audio information.
@@ -256,7 +228,7 @@ function Scene({ audioContext }) {
 	}
 
 	/**
-	 * Max sound ID + 1 if at least one ID exists else 0.
+	 * Returns an ID for a new sound.
 	 * @returns {number}
 	 */
 	function getNewSoundId() {
@@ -267,6 +239,70 @@ function Scene({ audioContext }) {
 			id = Math.max(...soundsList.map(sound => sound.id)) + 1;
 		return id;
 	}
+
+
+	// ========================================
+	// Handlers
+	// ========================================
+
+
+	const handleSoundTitleChange = (e, id) => {
+		setSoundsList((prevList) => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, title: e.target.value }
+					: sound;
+			});
+		});
+	};
+
+	/**
+	 * @param {number} id Sound ID.
+	 */
+	const handlePlayBtn = (id) => {
+		const sound = soundsList.find(sound => sound.id === id);
+
+		if (sound.isPlaying)
+			stopSound(id);
+		else
+			startSound(id);
+	};
+
+	/**
+	 * @param {Event} e
+	 * @param {number} id
+	 */
+	const handleVolumeChange = (e, id) => {
+		const sound = soundsList.find(sound => sound.id === id);
+		if (sound.gainNode)
+			sound.gainNode.gain.value = e.target.value;
+
+		setSoundsList((prevList) => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, volume: e.target.value }
+					: sound;
+			});
+		});
+	};
+
+	/**
+ * @param {Event} e
+ * @param {number} id
+ */
+	const handleIntervalChange = (e, id) => {
+		setSoundsList((prevList) => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, maxInterval: e.target.value }
+					: sound;
+			});
+		});
+	};
+
+	const handleAddSound = () => {
+		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
+	};
 
 	const handleDeleteBtn = (id) => {
 		stopSound(id, true);
@@ -294,8 +330,8 @@ function Scene({ audioContext }) {
 
 	return (
 		<div className='scene'>
-			<SceneSidebar/>
-			<Toolbar onSave={handleOnSave}/>
+			<SceneSidebar />
+			<Toolbar onSave={ handleOnSave } />
 			<div className='sounds_list'>
 				{ soundsList.map((props) =>
 					<Sound
@@ -309,7 +345,7 @@ function Scene({ audioContext }) {
 						onEnded={ handleSoundEnd }
 					/>
 				) }
-				<SoundAddBtn onClick={ addSound }/>
+				<SoundAddBtn onClick={ handleAddSound } />
 			</div>
 		</div>
 	);
