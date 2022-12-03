@@ -63,11 +63,7 @@ app.on('window-all-closed', () => {
 // Handlers
 
 ipcMain.handle('app:get-files-from-folder', (event, folder) => {
-	const fs = require('fs');
+	import { readdir } from 'node:fs/promises';
 
-	const files = [];
-	fs.readdirSync(folder).forEach(file => {
-		files.push(file);
-	});
-	return files;
+	return readdir(folder);
 });
