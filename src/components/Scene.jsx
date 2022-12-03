@@ -3,6 +3,7 @@ import { SceneSidebar } from './SceneSidebar';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
 import './css/Scene.css'
+import { Toolbar } from './Toolbar';
 
 /**
  * @param {Object} Scene
@@ -286,10 +287,15 @@ function Scene({ audioContext }) {
 		}
 	}
 
+	function handleOnSave(e) {
+		console.log('Save pressed');
+	}
+
 
 	return (
 		<div className='scene'>
 			<SceneSidebar/>
+			<Toolbar onSave={handleOnSave}/>
 			<div className='sounds_list'>
 				{ soundsList.map((props) =>
 					<Sound
