@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SceneSidebar } from './SceneSidebar';
 import Sound from './Sound';
 import SoundAddBtn from './SoundAddBtn';
 import { Toolbar } from './Toolbar';
-import './css/Scene.css'
+import './css/Scene.css';
 
 /**
  * @param {Object} Scene
@@ -17,19 +17,20 @@ function Scene({ audioContext }) {
 
 
 	/**
-		 * @typedef {Object} SoundParameters
-		 * @property {number} id
-		 * @property {string} title
-		 * @property {number} volume
-		 * @property {number | undefined} startedAt
-		 * @property {number | undefined} stoppedAt
-		 * @property {boolean} isPlaying
-		 * @property {number} minInterval
-		 * @property {number} maxInterval
-		 * @property {AudioBuffer} buffer
-		 * @property {GainNode | undefined} gainNode
-		 * @property {AudioBufferSourceNode | undefined} source
-		 */
+	 * @typedef {Object} SoundParameters
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {string} extension
+	 * @property {number} volume
+	 * @property {number | undefined} startedAt
+	 * @property {number | undefined} stoppedAt
+	 * @property {boolean} isPlaying
+	 * @property {number} minInterval
+	 * @property {number} maxInterval
+	 * @property {AudioBuffer} buffer
+	 * @property {GainNode | undefined} gainNode
+	 * @property {AudioBufferSourceNode | undefined} source
+	 */
 
 
 	// ========================================
@@ -42,6 +43,27 @@ function Scene({ audioContext }) {
 	 */
 	const soundState = useState([]);
 	const [soundsList, setSoundsList] = soundState;
+
+	useEffect(() => {
+		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/scene_name.json');
+		sceneSave.then(resolve => {
+			const json = JSON.parse(resolve);
+			let id = 0;
+
+			setSoundsList(json.map(soundJson => {
+				return {
+					id: id += 1,
+					title: soundJson.title,
+					extension: soundJson.extension,
+					volume: soundJson.volume,
+					isPlaying: false,
+					minInterval: soundJson.minInterval,
+					maxInterval: soundJson.maxInterval,
+					buffer: getAudioBufferFromFile(`/sounds/${ soundJson.title + '.' + soundJson.extension }`)
+				};
+			}));
+		}).catch(error => error);
+	}, [setSoundsList]);
 
 
 	// ========================================
@@ -158,14 +180,13 @@ function Scene({ audioContext }) {
 
 	// todo: refactor
 	/**
- * Initializes AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
- * @param {File} file
- */
+	 * Initializes AudioBuffer to the sound. Creates an object Sound and add it to the Scene.
+	 * @param {File} file
+	 */
 	function setupSoundAndAddInSoundList(file) {
-		const soundName = file.name.substring(0, file.name.lastIndexOf('.'));
 		const filePath = '/sounds/' + file.name;
 		getAudioBufferFromFile(filePath).then(audioBuffer => {
-			addSoundInSoundList(soundName, audioBuffer);
+			addSoundInSoundList(file.name, audioBuffer);
 		});
 	}
 
@@ -182,7 +203,7 @@ function Scene({ audioContext }) {
 
 	// todo: remove this absolutely disgusting dumpster of a function
 	/**
-	 * Opens a system dialog. 
+	 * Opens a system dialog.
 	 * @param {string} contentType The files you wish to select. For instance, use "image/*" to select all types of
 	 *     images.
 	 * @param {Boolean} multiple Indicates if the user can select multiple files.
@@ -209,15 +230,16 @@ function Scene({ audioContext }) {
 
 	/**
 	 * Starts a sound and then creates an object Sound and add it to the Scene.
-	 * @param {string} soundName
+	 * @param {string} fileName
 	 * @param {AudioBuffer} audioBuffer A buffer containing audio information.
 	 */
-	function addSoundInSoundList(soundName, audioBuffer) {
+	function addSoundInSoundList(fileName, audioBuffer) {
 		setSoundsList([
 			...soundsList,
 			{
 				id: getNewSoundId(),
-				title: soundName,
+				title: fileName.substring(0, fileName.lastIndexOf('.')),
+				extension: fileName.substring(fileName.lastIndexOf('.') + 1),
 				volume: 1.0,
 				isPlaying: false,
 				minInterval: 0,
@@ -246,6 +268,11 @@ function Scene({ audioContext }) {
 	// ========================================
 
 
+	/**
+	 *
+	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {number} id Sound ID.
+	 */
 	const handleSoundTitleChange = (e, id) => {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
@@ -257,6 +284,7 @@ function Scene({ audioContext }) {
 	};
 
 	/**
+	 *
 	 * @param {number} id Sound ID.
 	 */
 	const handlePlayBtn = (id) => {
@@ -269,8 +297,9 @@ function Scene({ audioContext }) {
 	};
 
 	/**
-	 * @param {Event} e
-	 * @param {number} id
+	 *
+	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {number} id Sound ID.
 	 */
 	const handleVolumeChange = (e, id) => {
 		const sound = soundsList.find(sound => sound.id === id);
@@ -287,9 +316,10 @@ function Scene({ audioContext }) {
 	};
 
 	/**
- * @param {Event} e
- * @param {number} id
- */
+	 *
+	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {number} id Sound ID.
+	 */
 	const handleIntervalChange = (e, id) => {
 		setSoundsList((prevList) => {
 			return prevList.map(sound => {
@@ -300,10 +330,17 @@ function Scene({ audioContext }) {
 		});
 	};
 
+	/**
+	 *
+	 */
 	const handleAddSound = () => {
 		selectFile('', false).then(file => setupSoundAndAddInSoundList(file));
 	};
 
+	/**
+	 * Stops and removes the sound with the given ID from the list and interface.
+	 * @param {number} id Sound ID.
+	 */
 	const handleDeleteBtn = (id) => {
 		stopSound(id, true);
 		setSoundsList(prevList => prevList.filter(sound => sound.id !== id));
@@ -323,15 +360,29 @@ function Scene({ audioContext }) {
 		}
 	}
 
+	/**
+	 *
+	 * @param {Event} e
+	 */
 	function handleOnSave(e) {
-		console.log('Save pressed');
+		const jsonString = JSON.stringify(soundsList.map(sound => {
+			return {
+				title: sound.title,
+				extension: sound.extension,
+				volume: sound.volume,
+				minInterval: sound.minInterval,
+				maxInterval: sound.maxInterval,
+			};
+		}));
+
+		window['electronAPI'].writeSceneSave('./public/saves/scene_name.json', jsonString);
 	}
 
 
 	return (
 		<div className='scene'>
-			<SceneSidebar />
-			<Toolbar onSave={ handleOnSave } />
+			<SceneSidebar/>
+			<Toolbar onSave={ handleOnSave }/>
 			<div className='sounds_list'>
 				{ soundsList.map((props) =>
 					<Sound
@@ -342,10 +393,9 @@ function Scene({ audioContext }) {
 						onVolumeChange={ handleVolumeChange }
 						onIntervalChange={ handleIntervalChange }
 						onDelete={ handleDeleteBtn }
-						onEnded={ handleSoundEnd }
 					/>
 				) }
-				<SoundAddBtn onClick={ handleAddSound } />
+				<SoundAddBtn onClick={ handleAddSound }/>
 			</div>
 		</div>
 	);

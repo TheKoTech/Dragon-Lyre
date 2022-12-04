@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
-// import { readdir } from 'node:fs/promises';
-const { readdir, ...fs } = require('node:fs/promises');
+const { readdir, readFile, writeFile } = require('node:fs/promises');
 
 function createWindow() {
 	const mainWindow = new BrowserWindow({
@@ -65,6 +64,13 @@ app.on('window-all-closed', () => {
 // Handlers
 
 ipcMain.handle('app:get-files-from-folder', (event, folder) => {
-
 	return readdir(folder);
+});
+
+ipcMain.handle('app:read-scene-save', (event, file) => {
+	return readFile(file, { encoding: 'utf-8' });
+});
+
+ipcMain.handle('app:write-scene-save', (event, file, data) => {
+	return writeFile(file, data, { encoding: 'utf-8' });
 });

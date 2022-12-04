@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IconButton } from './IconButton';
 import { PopupMenu } from './PopupMenu/PopupMenu';
 
-import './css/Sound.css'
+import './css/Sound.css';
 import { PopupMenuItem } from './PopupMenu/PopupMenuItem';
 
 /**
@@ -12,23 +12,15 @@ import { PopupMenuItem } from './PopupMenu/PopupMenuItem';
  * @param {number} Sound.volume
  * @param {number} Sound.minInterval
  * @param {number} Sound.maxInterval
- * @param {AudioBufferSourceNode | undefined} Sound.source
  */
 function Sound({
-	id,
-	title,
-	volume,
-	minInterval,
-	maxInterval,
-	source,
-	onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete, onEnded
-}) {
-	if (source) {
-		source.onended = () => {
-			onEnded(id, maxInterval);
-		};
-	}
-
+	               id,
+	               title,
+	               volume,
+	               minInterval,
+	               maxInterval,
+	               onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete
+               }) {
 	const [showPopupMenu, setShowPopupMenu] = useState(false);
 	const [paramsTab, setParamsTab] = useState(true);
 
@@ -40,8 +32,8 @@ function Sound({
 					value={ title }
 					onChange={ e => onTitleChange(e, id) }
 				/>
-				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) } />
-				<IconButton iconName={ 'Options' } onClick={ () => setShowPopupMenu(true) } />
+				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) }/>
+				<IconButton iconName={ 'Options' } onClick={ () => setShowPopupMenu(true) }/>
 			</div>
 			<PopupMenu
 				show={ showPopupMenu }
@@ -49,13 +41,13 @@ function Sound({
 			>
 				<PopupMenuItem
 					text={ `Duplicate` }
-					onClick={ () => null } />
+					onClick={ () => null }/>
 				<PopupMenuItem
 					text={ `Delete` }
-					onClick={ () => onDelete(id) } />
+					onClick={ () => onDelete(id) }/>
 			</PopupMenu>
-			{paramsTab ? (
-				<div className="sound-parameters">
+			{ paramsTab ? (
+				<div className='sound-parameters'>
 					<input
 						type='range'
 						min={ 0.0 }
@@ -71,7 +63,7 @@ function Sound({
 					<input
 						type='number'
 						className='min-interval-input'
-						defaultValue={ minInterval } />
+						defaultValue={ minInterval }/>
 					<label>
 						max interval:
 					</label>
@@ -79,10 +71,10 @@ function Sound({
 						type='number'
 						className='max-interval-input'
 						value={ maxInterval }
-						onChange={ e => onIntervalChange(e, id) } />
+						onChange={ e => onIntervalChange(e, id) }/>
 				</div>
 			) : (
-				<div className="sound-effects" style={{color: `var(--clr-base-60)`, fontSize: `.9em`}}>
+				<div className='sound-effects' style={ { color: `var(--clr-base-60)`, fontSize: `.9em` } }>
 					effects list is to be rendered (it's not even designed yet)
 				</div>
 			)
