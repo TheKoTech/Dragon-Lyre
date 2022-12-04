@@ -43,6 +43,7 @@ function Scene({ audioContext }) {
 	 */
 	const soundState = useState([]);
 	const [soundsList, setSoundsList] = soundState;
+	const [sceneTitle, setSceneTitle] = useState('New Scene');
 
 	useEffect(() => {
 		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/scene_name.json');
@@ -380,22 +381,31 @@ function Scene({ audioContext }) {
 
 
 	return (
-		<div className='scene'>
-			<SceneSidebar/>
-			<Toolbar onSave={ handleOnSave }/>
-			<div className='sounds_list'>
-				{ soundsList.map((props) =>
-					<Sound
-						key={ props.id }
-						{ ...props }
-						onTitleChange={ handleSoundTitleChange }
-						onPlayBtn={ handlePlayBtn }
-						onVolumeChange={ handleVolumeChange }
-						onIntervalChange={ handleIntervalChange }
-						onDelete={ handleDeleteBtn }
-					/>
-				) }
-				<SoundAddBtn onClick={ handleAddSound }/>
+		<div className='editor'>
+			<div className='editor__sidebar'>
+				<SceneSidebar/>
+			</div>
+			<div className='editor__content'>
+				<Toolbar onSave={ handleOnSave }/>
+				<input
+					className='editor__content_title'
+					type='text'
+					value={ sceneTitle }
+					onChange={ (e) => setSceneTitle(e.target.value) }/>
+				<div className='editor__content_sounds-list'>
+					{ soundsList.map((props) =>
+						<Sound
+							key={ props.id }
+							{ ...props }
+							onTitleChange={ handleSoundTitleChange }
+							onPlayBtn={ handlePlayBtn }
+							onVolumeChange={ handleVolumeChange }
+							onIntervalChange={ handleIntervalChange }
+							onDelete={ handleDeleteBtn }
+						/>
+					) }
+					<SoundAddBtn onClick={ handleAddSound }/>
+				</div>
 			</div>
 		</div>
 	);

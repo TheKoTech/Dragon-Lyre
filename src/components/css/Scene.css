@@ -1,9 +1,29 @@
-.scene {
+.editor {
 	display: flex;
 	align-items: flex-start;
 }
 
-.sounds_list {
+.editor__sidebar {
+	display: flex;
+	flex-direction: column;
+}
+
+.editor__content {
+	display: flex;
+	flex-direction: column;
+}
+
+.editor__content > input {
+	background: none;
+	font: inherit;
+	border: none;
+	margin: 10px 20px;
+	line-height: 1em;
+	color: var(--clr-text-normal);
+	font-size: var(--font-size-h1);
+}
+
+.editor__content_sounds-list {
 	padding: 12px 20px;
 	display: flex;
 	flex-wrap: wrap;
@@ -11,4 +31,5 @@
 	width: 100%;
 	column-gap: 5px;
 	row-gap: 5px;
+	height: 240px;
 }
