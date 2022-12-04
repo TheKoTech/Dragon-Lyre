@@ -9,6 +9,8 @@
 	border: 1px solid var(--clr-border);
 	flex-shrink: 1;
 	flex-basis: 240px;
+	height: 160px;
+	box-sizing: border-box;
 }
 
 .sound_title {

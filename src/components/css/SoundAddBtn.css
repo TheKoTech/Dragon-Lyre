@@ -3,6 +3,7 @@
 	padding: 5px 15px;
 	border-radius: 5px;
 	border: 1px solid var(--clr-border);
+	height: min-content;
 }
 
 .sound_add_btn p {

@@ -29,7 +29,8 @@
 		"react": "cross-env BROWSER=none npm start",
 		"electron": "wait-on http://127.0.0.1:3000 && electronmon .",
 		"dev": "concurrently -k -n react,electron \"npm run react\" \"npm run electron\"",
-		"electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/electron.js"
+		"electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/electron.js",
+		"temp": "electron ."
 	},
 	"dependencies": {
 		"node": "^19.1.0",
