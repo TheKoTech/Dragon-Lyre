@@ -1,5 +1,9 @@
+import React, { useState } from 'react';
 import { IconButton } from './IconButton';
+import { PopupMenu } from './PopupMenu/PopupMenu';
+
 import './css/Sound.css'
+import { PopupMenuItem } from './PopupMenu/PopupMenuItem';
 
 /**
  * @param {Object} Sound
@@ -11,30 +15,45 @@ import './css/Sound.css'
  * @param {AudioBufferSourceNode | undefined} Sound.source
  */
 function Sound({
-				   id,
-				   title,
-				   volume,
-				   minInterval,
-				   maxInterval,
-				   source,
-				   onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete, onEnded
-			   }) {
+	id,
+	title,
+	volume,
+	minInterval,
+	maxInterval,
+	source,
+	onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete, onEnded
+}) {
 	if (source) {
 		source.onended = () => {
 			onEnded(id, maxInterval);
 		};
 	}
 
+	const [showPopupMenu, setShowPopupMenu] = useState(false);
+
 	return (
 		<span className='sound'>
+
 			<div className='sound_title'>
 				<input
 					type='text'
 					value={ title }
 					onChange={ e => onTitleChange(e, id) }
 				/>
-				<IconButton iconName={ 'Options' } onClick={ e => { onDelete(e) } } />
+				<IconButton iconName={ 'Effects' } onClick={ () => { } } />
+				<IconButton iconName={ 'Options' } onClick={ () => setShowPopupMenu(true) } />
 			</div>
+			<PopupMenu
+				show={ showPopupMenu }
+				onClickOutside={ () => setShowPopupMenu(false) }
+			>
+				<PopupMenuItem
+					text={ `Duplicate` }
+					onClick={ () => null } />
+				<PopupMenuItem
+					text={ `Delete` }
+					onClick={ () => onDelete(id) } />
+			</PopupMenu>
 			<input
 				type='range'
 				min={ 0.0 }

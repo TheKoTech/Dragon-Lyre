@@ -32,6 +32,8 @@ body {
 	--clr-border: rgb(255 255 255 / .1);
 	--clr-highlight: rgb(255 255 255 / .1);
 
+	--shadow-normal: 0 8px 8px rgb(0 0 0 / .2);
+
 	--font-size-h1: 1.75em;
 	--font-size-h2: 1.375em;
 	--font-size-h3: 1.125em;

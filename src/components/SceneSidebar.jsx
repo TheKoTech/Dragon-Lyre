@@ -19,6 +19,7 @@ export const SceneSidebar = (props) => {
 				<div className='sidebar__content_sounds-list'>
 					{soundsList.map(props => 
 						<SidebarSound 
+							key={props.path}
 							title={props.title}
 							path={props.path}
 						/>)}

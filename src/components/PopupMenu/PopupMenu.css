@@ -1,0 +1,39 @@
+.popup-menu {
+	position: absolute;
+	right: 16px;
+	top: 10px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 7px;
+	background: var(--clr-base-20);
+	border: 1px solid var(--clr-border);
+	width: 150px;
+	padding: 3px;
+	box-shadow: var(--shadow-normal);
+}
+
+.popup-menu > button {
+	color: inherit;
+	font: inherit;
+	border: none;
+	background-color: transparent;
+	
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: left;
+	
+	height: 24px;
+	padding: 5px 10px;
+	border-radius: 4px;
+
+	font-size: .9em;
+}
+
+.popup-menu > :hover {
+	background-color: var(--clr-highlight);
+}
+
+.popup-menu > :focus {
+	outline: 2px solid var(--clr-red);
+}

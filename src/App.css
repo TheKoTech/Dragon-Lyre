@@ -1,27 +1,3 @@
-.sound_add_btn {
-	background: var(--clr-base-20);
-	padding: 5px 15px;
-	border-radius: 5px;
-	border: 1px solid var(--clr-border);
-}
-
-.sound_add_btn p {
-	text-align: center;
-}
-
-.sound_add_btn:hover {
-	background: var(--clr-base-25);
-	cursor: pointer;
-}
-
-.sound_add_btn:active {
-	background: var(--clr-base-30);
-}
-
-.sound_add_btn p::selection {
-	display: none;
-}
-
 :where(h1, h2, h3, h4, h5, h6) {
 	margin: 0;
 }

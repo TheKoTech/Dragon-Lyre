@@ -3,14 +3,13 @@ import * as Icons from '../assets/icons'
 import './css/IconButton.css'
 
 export const IconButton = ({ iconName, label, onClick }) => {
-	console.log(Icons[iconName]);
 	return (
-		<span
+		<button
 			onClick={ (e) => onClick(e) }
 			className='icon-button'
 		>
 			{ Icons[iconName] }
 			{ label ? <label>label</label> : '' }
-		</span>
+		</button>
 	);
 }

@@ -1,5 +1,6 @@
 export * from './icons/arrow'
 export * from './icons/drag_indicator'
+export * from './icons/effects'
 export * from './icons/music'
 export * from './icons/options'
 export * from './icons/save'
