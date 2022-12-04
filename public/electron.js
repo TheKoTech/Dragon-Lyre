@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
+// import { readdir } from 'node:fs/promises';
+const { readdir, ...fs } = require('node:fs/promises');
 
 function createWindow() {
 	const mainWindow = new BrowserWindow({
@@ -63,7 +65,6 @@ app.on('window-all-closed', () => {
 // Handlers
 
 ipcMain.handle('app:get-files-from-folder', (event, folder) => {
-	import { readdir } from 'node:fs/promises';
 
 	return readdir(folder);
 });
