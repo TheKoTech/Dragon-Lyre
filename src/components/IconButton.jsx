@@ -1,6 +1,6 @@
-import React from 'react'
-import * as Icons from '../assets/icons'
-import './css/IconButton.css'
+import React from 'react';
+import * as Icons from '../assets/icons';
+import './css/IconButton.css';
 
 export const IconButton = ({ iconName, label, onClick }) => {
 	return (
@@ -12,4 +12,4 @@ export const IconButton = ({ iconName, label, onClick }) => {
 			{ label ? <label>label</label> : '' }
 		</button>
 	);
-}
+};

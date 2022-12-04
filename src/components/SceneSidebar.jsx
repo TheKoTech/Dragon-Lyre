@@ -1,14 +1,34 @@
-import React from 'react';
-import { useState } from 'react';
-import './css/SceneSidebar.css'
+import React, { useEffect, useState } from 'react';
+import './css/SceneSidebar.css';
 import { SidebarSound } from './SidebarSound';
 
-export const SceneSidebar = (props) => {
+export const SceneSidebar = () => {
+	/**
+	 * @typedef {Object} FileParameters
+	 * @property {number} id
+	 * @property {string} title
+	 * @property {string} path
+	 */
 
-	const [soundsList, setSoundsList] = useState([{
-		title: 'test_title.ogg',
-		path: 'none',
-	}]);
+	/**
+	 * @type [FileParameters[], Dispatch<SetStateAction<FileParameters[]>>]
+	 */
+	const fileState = useState([]);
+	const [fileList, setFileList] = fileState;
+
+	useEffect(() => {
+		const files = window['electronAPI'].getFilesFromFolder('./public/sounds');
+		files.then(resolve => {
+			setFileList(resolve.map(file => {
+				return {
+					id: file,
+					title: file.substring(0, file.lastIndexOf('.')),
+					path: './public/sounds/' + file
+				};
+			}));
+		});
+	}, [setFileList]);
+
 
 	return (
 		<div className='sidebar'>
@@ -17,14 +37,15 @@ export const SceneSidebar = (props) => {
 					Sounds
 				</h1>
 				<div className='sidebar__content_sounds-list'>
-					{soundsList.map(props => 
-						<SidebarSound 
-							key={props.path}
-							title={props.title}
-							path={props.path}
-						/>)}
+					{ fileList.map(props =>
+						<SidebarSound
+							key={ props.id }
+							title={ props.title }
+							path={ props.path }
+						/>
+					) }
 				</div>
 			</div>
 		</div>
-	)
-}
+	);
+};
