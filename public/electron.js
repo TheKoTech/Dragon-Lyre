@@ -68,9 +68,15 @@ ipcMain.handle('app:get-files-from-folder', (event, folder) => {
 });
 
 ipcMain.handle('app:read-scene-save', (event, file) => {
-	return readFile(file, { encoding: 'utf-8' });
+	return readFile(file, { encoding: 'utf-8' }).catch(error => {
+		if (error.code === 'ENOENT')
+			return null;
+	});
 });
 
 ipcMain.handle('app:write-scene-save', (event, file, data) => {
-	return writeFile(file, data, { encoding: 'utf-8' });
+	return writeFile(file, data, { encoding: 'utf-8' }).catch(error => {
+		if (error.code === '')
+			return null;
+	});
 });

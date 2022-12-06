@@ -161,7 +161,7 @@ export default class SoundManagement {
 			gainNode.gain.value = 0.5;
 			sourceNode.onended = () => {
 				if (sound.isPlaying) {
-					this.startSound(sound, audioContext.currentTime, sound.maxInterval);
+					this.startSound(audioContext, sound, sound.maxInterval);
 				}
 			};
 		}

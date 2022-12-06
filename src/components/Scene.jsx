@@ -61,6 +61,8 @@ function Scene({ audioContext }) {
 		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/scene_name.json');
 
 		sceneSave.then(resolve => {
+			if (resolve === null) return;
+
 			let id = SoundManagement.getNewElementId(soundsList);
 
 			SoundManagement.addNewSoundsInSoundList(audioContext, soundListState, JSON.parse(resolve).map(soundJson => {
@@ -73,8 +75,8 @@ function Scene({ audioContext }) {
 					maxInterval: soundJson.maxInterval,
 				};
 			}));
-		}).catch(error => console.error(error));
-	}, [setSoundsList]);
+		});
+	}, [audioContext, soundListState, soundsList, setSoundsList]);
 
 
 	// ========================================
@@ -103,7 +105,7 @@ function Scene({ audioContext }) {
 		const sound = soundsList.find(sound => sound.id === id);
 
 		if (sound.isPlaying)
-			SoundManagement.stopSound(sound, audioContext.currentTime);
+			SoundManagement.stopSound(audioContext, sound);
 		else
 			SoundManagement.startSound(audioContext, sound);
 	};
@@ -151,11 +153,11 @@ function Scene({ audioContext }) {
 					id: id += 1,
 					title: file.name.substring(0, file.name.lastIndexOf('.')),
 					extension: file.name.substring(file.name.lastIndexOf('.') + 1),
-					volume: 1.0,
+					volume: 0.5,
 					minInterval: 0,
 					maxInterval: 5,
-				}
-			}))
+				};
+			}));
 		});
 	};
 
