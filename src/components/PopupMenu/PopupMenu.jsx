@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react'
-import './PopupMenu.css'
+import React, { useEffect, useRef } from 'react';
+import './PopupMenu.css';
 
 /**
  * @param {Object} PopupMenu
- * @param {boolean} PopupMenu.show Whether the PopupMenu is shown
- * @param {Function} PopupMenu.onClickOutside Called on click outside the popup menu
+ * @param {PopupMenuItem[]} PopupMenu.children
+ * @param {boolean} PopupMenu.isShown Whether the PopupMenu is shown.
+ * @param {Function} PopupMenu.onClickOutside Called on click outside the popup menu.
  */
-export const PopupMenu = ({ children, show, onClickOutside }) => {
+function PopupMenu({ children, isShown, onClickOutside }) {
 
 	const wrapperRef = useRef(null);
 
@@ -21,16 +22,18 @@ export const PopupMenu = ({ children, show, onClickOutside }) => {
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
-		}
+		};
 	}, [onClickOutside]);
 
 
-	if (!show)
-		return null
+	if (!isShown)
+		return null;
 
 	return (
-		<div ref={wrapperRef} className='popup-menu'>
+		<div ref={ wrapperRef } className='popup-menu'>
 			{ children }
 		</div>
-	)
+	);
 }
+
+export default PopupMenu;

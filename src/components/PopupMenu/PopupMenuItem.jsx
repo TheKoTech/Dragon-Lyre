@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-export const PopupMenuItem = ({ text, ...props }) => {
-	console.log(props)
+function PopupMenuItem({ text, ...props }) {
 	return (
 		<button { ...props }>{ text }</button>
-	)
+	);
 }
+
+export default PopupMenuItem;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './css/SceneSidebar.css';
-import { SidebarSound } from './SidebarSound';
+import SidebarSound from './SidebarSound';
 
-export const SceneSidebar = () => {
+function SceneSidebar() {
 	/**
 	 * @typedef {Object} FileParameters
 	 * @property {number} id
@@ -48,4 +48,6 @@ export const SceneSidebar = () => {
 			</div>
 		</div>
 	);
-};
+}
+
+export default SceneSidebar;
