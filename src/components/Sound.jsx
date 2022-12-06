@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { IconButton } from './IconButton';
-import { PopupMenu } from './PopupMenu/PopupMenu';
-
 import './css/Sound.css';
-import { PopupMenuItem } from './PopupMenu/PopupMenuItem';
+
+import IconButton from './IconButton';
+import PopupMenu from './PopupMenu/PopupMenu';
+import PopupMenuItem from './PopupMenu/PopupMenuItem';
 
 /**
  * @param {Object} Sound
