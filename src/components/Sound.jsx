@@ -28,9 +28,14 @@ function Sound({
 		<span className='sound'>
 			<div className='sound_title'>
 				<input
+					type='button'
+					value='Play'
+					onClick={ () => onPlayBtn(id) }
+				/>
+				<input
 					type='text'
 					value={ title }
-					onChange={ e => onTitleChange(e, id) }
+					onChange={ event => onTitleChange(event, id) }
 				/>
 				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) }/>
 				<IconButton iconName={ 'Options' } onClick={ () => setShowPopupMenu(true) }/>
@@ -55,7 +60,7 @@ function Sound({
 						step={ 0.01 }
 						className='volume_slider'
 						value={ volume }
-						onChange={ e => onVolumeChange(e, id) }
+						onChange={ event => onVolumeChange(event, id) }
 					/>
 					<label>
 						min interval:
@@ -71,7 +76,7 @@ function Sound({
 						type='number'
 						className='max-interval-input'
 						value={ maxInterval }
-						onChange={ e => onIntervalChange(e, id) }/>
+						onChange={ event => onIntervalChange(event, id) }/>
 				</div>
 			) : (
 				<div className='sound-effects' style={ { color: `var(--clr-base-60)`, fontSize: `.9em` } }>
