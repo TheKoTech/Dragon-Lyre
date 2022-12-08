@@ -5,7 +5,8 @@ import Sound from './Sound';
 import Toolbar from './Toolbar';
 import SoundAddBtn from './SoundAddBtn';
 import SceneSidebar from './SceneSidebar';
-import SoundManagement from '../modules/sound-management';
+import SSSound from '../modules/s-s-sound';
+import ASound from '../modules/a-sound';
 
 
 /**
@@ -50,7 +51,7 @@ function Scene({ audioContext }) {
 	 * @type [SoundParameters[], Dispatch<SetStateAction<SoundParameters[]>>]
 	 */
 	const soundListState = useState([]);
-	const [soundsList, setSoundsList] = soundListState;
+	const [soundList, setSoundList] = soundListState;
 	/**
 	 * @type [string, Dispatch<SetStateAction<string>>]
 	 */
@@ -63,9 +64,9 @@ function Scene({ audioContext }) {
 		sceneSave.then(resolve => {
 			if (resolve === null) return;
 
-			let id = SoundManagement.getNewElementId(soundsList);
+			let id = ASound.getNewElementId(soundList);
 
-			SoundManagement.addNewSoundsInSoundList(audioContext, soundListState, JSON.parse(resolve).map(soundJson => {
+			ASound.addNewSoundsInSoundList(audioContext, soundListState, JSON.parse(resolve).map(soundJson => {
 				return {
 					id: id += 1,
 					title: soundJson.title,
@@ -76,7 +77,7 @@ function Scene({ audioContext }) {
 				};
 			}));
 		});
-	}, [audioContext, soundListState, soundsList, setSoundsList]);
+	}, []);
 
 
 	// ========================================
@@ -85,14 +86,14 @@ function Scene({ audioContext }) {
 
 
 	/**
-	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {ChangeEvent<HTMLInputElement>} event
 	 * @param {number} id Sound ID.
 	 */
-	const handleSoundTitleChange = (e, id) => {
-		setSoundsList((prevList) => {
+	const handleSoundTitleChange = (event, id) => {
+		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, title: e.target.value }
+					? { ...sound, title: event.target.value }
 					: sound;
 			});
 		});
@@ -102,41 +103,51 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handlePlayBtn = (id) => {
-		const sound = soundsList.find(sound => sound.id === id);
+		const sound = soundList.find(sound => sound.id === id);
 
-		if (sound.isPlaying)
-			SoundManagement.stopSound(audioContext, sound);
-		else
-			SoundManagement.startSound(audioContext, sound);
-	};
+		const newSound = sound.isPlaying
+			? SSSound.stopSound(audioContext, sound)
+			: SSSound.startSound(audioContext, sound);
 
-	/**
-	 * @param {ChangeEvent<HTMLInputElement>} e
-	 * @param {number} id Sound ID.
-	 */
-	const handleVolumeChange = (e, id) => {
-		const sound = soundsList.find(sound => sound.id === id);
-		if (sound.gainNode)
-			sound.gainNode.gain.value = e.target.value;
-
-		setSoundsList((prevList) => {
+		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, volume: e.target.value }
+					? newSound
 					: sound;
 			});
 		});
 	};
 
 	/**
-	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {ChangeEvent<HTMLInputElement>} event
 	 * @param {number} id Sound ID.
 	 */
-	const handleIntervalChange = (e, id) => {
-		setSoundsList((prevList) => {
+	const handleVolumeChange = (event, id) => {
+		const sound = soundList.find(sound => sound.id === id);
+		if (sound.gainNode) {
+			sound.gainNode.gain.value = event.target.value;
+		}
+
+		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, maxInterval: e.target.value }
+					? { ...sound, volume: +event.target.value }
+					: sound;
+			});
+		});
+	};
+
+	/**
+	 * @param {ChangeEvent<HTMLInputElement>} event
+	 * @param {number} id Sound ID.
+	 */
+	const handleIntervalChange = (event, id) => {
+		console.log(soundList);
+
+		setSoundList(prevList => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, maxInterval: +event.target.value }
 					: sound;
 			});
 		});
@@ -145,10 +156,10 @@ function Scene({ audioContext }) {
 	/**
 	 */
 	const handleAddSound = () => {
-		SoundManagement.selectFiles().then(files => {
-			let id = SoundManagement.getNewElementId(soundsList);
+		ASound.selectFiles().then(files => {
+			let id = ASound.getNewElementId(soundList);
 
-			SoundManagement.addNewSoundsInSoundList(audioContext, soundListState, files.map(file => {
+			ASound.addNewSoundsInSoundList(audioContext, soundListState, files.map(file => {
 				return {
 					id: id += 1,
 					title: file.name.substring(0, file.name.lastIndexOf('.')),
@@ -166,17 +177,17 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleDeleteBtn = (id) => {
-		const sound = soundsList.find(sound => sound.id === id);
-		SoundManagement.stopSound(audioContext, sound, true);
+		const sound = soundList.find(sound => sound.id === id);
+		SSSound.stopSound(audioContext, sound, true);
 
-		setSoundsList(prevList => prevList.filter(sound => sound.id !== id));
+		setSoundList(prevList => prevList.filter(sound => sound.id !== id));
 	};
 
 	/**
-	 * @param {MouseEvent<HTMLButtonElement>} e
+	 * @param {MouseEvent<HTMLButtonElement>} event
 	 */
-	function handleOnSave(e) {
-		const jsonString = JSON.stringify(soundsList.map(sound => {
+	function handleOnSave(event) {
+		const jsonString = JSON.stringify(soundList.map(sound => {
 			return {
 				title: sound.title,
 				extension: sound.extension,
@@ -201,9 +212,9 @@ function Scene({ audioContext }) {
 					className='editor__content_title'
 					type='text'
 					value={ sceneTitle }
-					onChange={ (e) => setSceneTitle(e.target.value) }/>
+					onChange={ (event) => setSceneTitle(event.target.value) }/>
 				<div className='editor__content_sounds-list'>
-					{ soundsList.map((props) =>
+					{ soundList.map((props) =>
 						<Sound
 							key={ props.id }
 							{ ...props }
