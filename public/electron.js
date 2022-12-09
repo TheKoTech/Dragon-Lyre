@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
-const { readdir, readFile, writeFile } = require('node:fs/promises');
+const { readdir, readFile, writeFile, rename } = require('node:fs/promises');
+const { existsSync, mkdirSync } = require('fs');
 
 function createWindow() {
 	const mainWindow = new BrowserWindow({
@@ -19,9 +20,9 @@ function createWindow() {
 
 
 	if (app.isPackaged) {
-		mainWindow.loadFile(path.resolve(__dirname, 'index.html'));
+		mainWindow.loadFile(path.resolve(__dirname, 'index.html')).then();
 	} else {
-		mainWindow.loadURL('http://localhost:3000');
+		mainWindow.loadURL('http://localhost:3000').then();
 		mainWindow.webContents.openDevTools({ mode: 'detach' });
 	}
 	return mainWindow;
@@ -61,22 +62,40 @@ app.on('window-all-closed', () => {
 });
 
 
+// ========================================
 // Handlers
+// ========================================
 
-ipcMain.handle('app:get-files-from-folder', (event, folder) => {
-	return readdir(folder);
+
+ipcMain.handle('app:get-files-from-folder', (event, folderName) => {
+	return readdir(folderName);
 });
 
-ipcMain.handle('app:read-scene-save', (event, file) => {
-	return readFile(file, { encoding: 'utf-8' }).catch(error => {
+ipcMain.handle('save:read-scene', (event, fileName) => {
+	return readFile(fileName, { encoding: 'utf-8' }).catch(error => {
 		if (error.code === 'ENOENT')
 			return null;
 	});
 });
 
-ipcMain.handle('app:write-scene-save', (event, file, data) => {
-	return writeFile(file, data, { encoding: 'utf-8' }).catch(error => {
-		if (error.code === '')
+ipcMain.handle('save:write-scene', (event, fileName, data) => {
+	const fileFolder = fileName.substring(0, fileName.lastIndexOf('/'));
+	if (!existsSync(fileFolder)) {
+		mkdirSync(fileFolder);
+	}
+	return writeFile(fileName, data, { encoding: 'utf-8' }).catch(error => {
+		console.error(error);
+		if (error.code === '') {
 			return null;
+		}
+	});
+});
+
+ipcMain.handle('save:rename-scene', (event, oldName, newName) => {
+	return rename(oldName, newName).catch(error => {
+		console.error(error);
+		if (error.code === '') {
+			return null;
+		}
 	});
 });
