@@ -12,7 +12,7 @@ process.once('loaded', () => {
 		},
 		/**
 		 *
-		 * @param {File} file
+		 * @param {string} file
 		 * @returns {Promise<string>}
 		 */
 		readSceneSave: (file) => {
@@ -20,11 +20,11 @@ process.once('loaded', () => {
 		},
 		/**
 		 *
-		 * @param {File} file
+		 * @param {string} file
 		 * @param {string} data
 		 */
 		writeSceneSave: (file, data) => {
-			ipcRenderer.invoke('app:write-scene-save', file, data);
+			return ipcRenderer.invoke('app:write-scene-save', file, data);
 		},
 	});
 });
