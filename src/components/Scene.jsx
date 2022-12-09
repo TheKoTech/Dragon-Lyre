@@ -86,14 +86,14 @@ function Scene({ audioContext }) {
 
 
 	/**
-	 * @param {ChangeEvent<HTMLInputElement>} event
+	 * @param {ChangeEvent<HTMLInputElement>} e
 	 * @param {number} id Sound ID.
 	 */
-	const handleSoundTitleChange = (event, id) => {
+	const handleSoundTitleChange = (e, id) => {
 		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, title: event.target.value }
+					? { ...sound, title: e.target.value }
 					: sound;
 			});
 		});
@@ -119,33 +119,47 @@ function Scene({ audioContext }) {
 	};
 
 	/**
-	 * @param {ChangeEvent<HTMLInputElement>} event
+	 * @param {ChangeEvent<HTMLInputElement>} e
 	 * @param {number} id Sound ID.
 	 */
-	const handleVolumeChange = (event, id) => {
+	const handleVolumeChange = (e, id) => {
 		const sound = soundList.find(sound => sound.id === id);
 		if (sound.gainNode) {
-			sound.gainNode.gain.value = +event.target.value;
+			sound.gainNode.gain.value = +e.target.value;
 		}
 
 		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, volume: +event.target.value }
+					? { ...sound, volume: +e.target.value }
 					: sound;
 			});
 		});
 	};
 
 	/**
-	 * @param {ChangeEvent<HTMLInputElement>} event
+	 * @param {ChangeEvent<HTMLInputElement>} e
 	 * @param {number} id Sound ID.
 	 */
-	const handleIntervalChange = (event, id) => {
+	const handleMinIntervalChange = (e, id) => {
 		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
-					? { ...sound, maxInterval: +event.target.value }
+					? { ...sound, minInterval: +e.target.value }
+					: sound;
+			});
+		});
+	};
+
+	/**
+	 * @param {ChangeEvent<HTMLInputElement>} e
+	 * @param {number} id Sound ID.
+	 */
+	const handleMaxIntervalChange = (e, id) => {
+		setSoundList(prevList => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? { ...sound, maxInterval: +e.target.value }
 					: sound;
 			});
 		});
@@ -183,14 +197,10 @@ function Scene({ audioContext }) {
 
 	/**
 	 * @param {number} id
-	 * @param {number} minInterval
-	 * @param {number} maxInterval
 	 */
-	const handleSoundEnd = (id, minInterval, maxInterval) => {
+	const handleSoundEnd = (id) => {
 		const sound = soundList.find(sound => sound.id === id);
-
-		const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
-		const newSound = SSSound.startSound(audioContext, sound, randomInterval);
+		const newSound = SSSound.startSound(audioContext, sound);
 
 		setSoundList(prevList => {
 			return prevList.map(sound => {
@@ -202,9 +212,9 @@ function Scene({ audioContext }) {
 	};
 
 	/**
-	 * @param {MouseEvent<HTMLButtonElement>} event
+	 * @param {MouseEvent<HTMLButtonElement>} e
 	 */
-	function handleOnSave(event) {
+	function handleOnSave(e) {
 		const jsonString = JSON.stringify(soundList.map(sound => {
 			return {
 				title: sound.title,
@@ -230,7 +240,7 @@ function Scene({ audioContext }) {
 					className='editor__content_title'
 					type='text'
 					value={ sceneTitle }
-					onChange={ (event) => setSceneTitle(event.target.value) }/>
+					onChange={ (e) => setSceneTitle(e.target.value) }/>
 				<div className='editor__content_sounds-list'>
 					{ soundList.map((props) =>
 						<Sound
@@ -239,7 +249,8 @@ function Scene({ audioContext }) {
 							onTitleChange={ handleSoundTitleChange }
 							onPlayBtn={ handlePlayBtn }
 							onVolumeChange={ handleVolumeChange }
-							onIntervalChange={ handleIntervalChange }
+							onMinIntervalChange={ handleMinIntervalChange }
+							onMaxIntervalChange={ handleMaxIntervalChange }
 							onDelete={ handleDeleteBtn }
 							onSoundEnd={ handleSoundEnd }
 						/>

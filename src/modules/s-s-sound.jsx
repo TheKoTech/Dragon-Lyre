@@ -35,26 +35,33 @@ export default class SSSound {
 	/**
 	 * @param {AudioContext} audioContext
 	 * @param {SoundParameters} sound
-	 * @param {number} when
 	 * @returns {SoundParameters}
 	 */
-	static startSound(audioContext, sound, when = 0) {
+	static startSound(audioContext, sound) {
 		const newSound = this.#createNewSoundWithSourceAndGain(audioContext, sound);
 
-		let offset = 0;
-		if (sound.stoppedAt) {
-			if (sound.stoppedAt - sound.startedAt >= 0) {
-				offset = sound.stoppedAt - sound.startedAt;
-			} else {
-				when = sound.startedAt - sound.stoppedAt;
-			}
-		}
-		newSound.source.start(audioContext.currentTime + when, offset);
+		const offset = this.calculateOffset(sound.startedAt, sound.stoppedAt);
+		newSound.source.start(0, offset);
 		newSound.isPlaying = true;
-		newSound.startedAt = audioContext.currentTime - offset + when;
+		newSound.startedAt = audioContext.currentTime - offset;
 		newSound.stoppedAt = undefined;
 
 		return newSound;
+	}
+
+	/**
+	 * @param {number} startedAt
+	 * @param {number} stoppedAt
+	 * @returns {number}
+	 */
+	static calculateOffset(startedAt, stoppedAt) {
+		let offset = 0;
+
+		if (stoppedAt - startedAt >= 0) {
+			offset = stoppedAt - startedAt;
+		}
+
+		return offset;
 	}
 
 	/**

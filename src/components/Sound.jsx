@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './css/Sound.css';
 
 import IconButton from './IconButton';
@@ -13,6 +13,13 @@ import PopupMenuItem from './PopupMenu/PopupMenuItem';
  * @param {number} Sound.minInterval
  * @param {number} Sound.maxInterval
  * @param {AudioBufferSourceNode} Sound.source
+ * @param {function(id: number)} Sound.onPlayBtn
+ * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onTitleChange
+ * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onVolumeChange
+ * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onMinIntervalChange
+ * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onMaxIntervalChange
+ * @param {function(id: number)} Sound.onDelete
+ * @param {function(id: number)} Sound.onSoundEnd
  */
 function Sound({
 	               id,
@@ -21,16 +28,54 @@ function Sound({
 	               minInterval,
 	               maxInterval,
 	               source,
-	               onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete, onSoundEnd
+	               onPlayBtn,
+	               onTitleChange,
+	               onVolumeChange,
+	               onMinIntervalChange,
+	               onMaxIntervalChange,
+	               onDelete,
+	               onSoundEnd
                }) {
-	const [showPopupMenu, setShowPopupMenu] = useState(false);
-	const [paramsTab, setParamsTab] = useState(true);
+
+	/**
+	 * @type [boolean, Dispatch<SetStateAction<boolean>>]
+	 */
+	const popupMenuIsShownState = useState(false);
+	const [popupMenuIsShown, setPopupMenuIsShown] = popupMenuIsShownState;
+	/**
+	 * @type [boolean, Dispatch<SetStateAction<boolean>>]
+	 */
+	const paramsTabState = useState(true);
+	const [paramsTab, setParamsTab] = paramsTabState;
+	/**
+	 * @type [number, Dispatch<SetStateAction<number>>]
+	 */
+	const timeToStartSoundState = useState(undefined);
+	const [soundStartTime, setSoundStartTime] = timeToStartSoundState;
+
+	useEffect(() => {
+		if (soundStartTime !== undefined) {
+			const interval = setInterval(() => {
+				if (soundStartTime < Date.now()) {
+					console.log('end time', Date.now() / 1000);
+					setSoundStartTime(undefined);
+					onSoundEnd(id);
+				}
+			}, 50);
+			return () => clearInterval(interval);
+		}
+	});
 
 	if (source) {
 		source.onended = () => {
-			onSoundEnd(id, minInterval, maxInterval);
+			console.log(minInterval, maxInterval);
+			const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
+			console.log('random interval', randomInterval);
+			console.log('start time', Date.now() / 1000);
+			setSoundStartTime(Date.now() + randomInterval * 1000);
 		};
 	}
+
 
 	return (
 		<span className='sound'>
@@ -43,14 +88,14 @@ function Sound({
 				<input
 					type='text'
 					value={ title }
-					onChange={ event => onTitleChange(event, id) }
+					onChange={ e => onTitleChange(e, id) }
 				/>
 				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) }/>
-				<IconButton iconName={ 'Options' } onClick={ () => setShowPopupMenu(true) }/>
+				<IconButton iconName={ 'Options' } onClick={ () => setPopupMenuIsShown(true) }/>
 			</div>
 			<PopupMenu
-				show={ showPopupMenu }
-				onClickOutside={ () => setShowPopupMenu(false) }
+				show={ popupMenuIsShown }
+				onClickOutside={ () => setPopupMenuIsShown(false) }
 			>
 				<PopupMenuItem
 					text={ `Duplicate` }
@@ -68,7 +113,7 @@ function Sound({
 						step={ 0.01 }
 						className='volume_slider'
 						value={ volume }
-						onChange={ event => onVolumeChange(event, id) }
+						onChange={ e => onVolumeChange(e, id) }
 					/>
 					<label>
 						min interval:
@@ -76,15 +121,16 @@ function Sound({
 					<input
 						type='number'
 						className='min-interval-input'
-						defaultValue={ minInterval }/>
+						defaultValue={ minInterval }
+						onChange={ e => onMinIntervalChange(e, id) }/>
 					<label>
 						max interval:
 					</label>
 					<input
 						type='number'
 						className='max-interval-input'
-						value={ maxInterval }
-						onChange={ event => onIntervalChange(event, id) }/>
+						defaultValue={ maxInterval }
+						onChange={ e => onMaxIntervalChange(e, id) }/>
 				</div>
 			) : (
 				<div className='sound-effects' style={ { color: `var(--clr-base-60)`, fontSize: `.9em` } }>
