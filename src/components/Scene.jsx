@@ -23,8 +23,8 @@ function Scene({ audioContext }) {
 	/**
 	 * @typedef {Object} SoundParameters
 	 * @property {number} id Sound ID.
-	 * @property {string} title Representing the sound name.
-	 * @property {string} extension File extension.
+	 * @property {string} title Sound name in the app.
+	 * @property {string} fileName File name in the system.
 	 * @property {number} volume Sound volume (in the range from 0 to 1).
 	 * @property {number | undefined} startedAt Fractional number representing the start time of the sound (by time in
 	 *     the AudioContext).
@@ -59,18 +59,20 @@ function Scene({ audioContext }) {
 	const [sceneTitle, setSceneTitle] = sceneTitleState;
 
 	useEffect(() => {
-		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/scene_name.json');
+		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/new_scene.json');
 
 		sceneSave.then(resolve => {
 			if (resolve === null) return;
 
-			let id = ASound.getNewElementId(soundList);
+			const json = JSON.parse(resolve);
+			setSceneTitle(json['title']);
 
-			ASound.addNewSoundsInSoundList(audioContext, soundListState, JSON.parse(resolve).map(soundJson => {
+			let id = ASound.getNewElementId(soundList);
+			ASound.addNewSoundsInSoundList(audioContext, soundListState, json['sounds'].map(soundJson => {
 				return {
 					id: id += 1,
 					title: soundJson.title,
-					extension: soundJson.extension,
+					fileName: soundJson.fileName,
 					volume: soundJson.volume,
 					minInterval: soundJson.minInterval,
 					maxInterval: soundJson.maxInterval,
@@ -175,7 +177,7 @@ function Scene({ audioContext }) {
 				return {
 					id: id += 1,
 					title: file.name.substring(0, file.name.lastIndexOf('.')),
-					extension: file.name.substring(file.name.lastIndexOf('.') + 1),
+					fileName: file.name,
 					volume: 0.5,
 					minInterval: 0,
 					maxInterval: 5,
@@ -215,17 +217,35 @@ function Scene({ audioContext }) {
 	 * @param {MouseEvent<HTMLButtonElement>} e
 	 */
 	function handleOnSave(e) {
-		const jsonString = JSON.stringify(soundList.map(sound => {
-			return {
-				title: sound.title,
-				extension: sound.extension,
-				volume: sound.volume,
-				minInterval: sound.minInterval,
-				maxInterval: sound.maxInterval,
-			};
-		}));
+		const jsonString = JSON.stringify({
+			title: sceneTitle,
+			sounds: soundList.map(sound => {
+				return {
+					title: sound.title,
+					fileName: sound.fileName,
+					volume: sound.volume,
+					minInterval: sound.minInterval,
+					maxInterval: sound.maxInterval,
+				};
+			})
+		});
 
-		window['electronAPI'].writeSceneSave('./public/saves/scene_name.json', jsonString);
+		const saveFileName = sceneTitle.toLowerCase().replace(' ', '_') + '.json';
+		// Add a checkmark animation in then block.
+		window['electronAPI'].writeSceneSave(`./public/saves/${ saveFileName }`, jsonString).then();
+	}
+
+	/**
+	 *
+	 * @param e
+	 */
+	function handleOnTitleSceneChange(e) {
+		const oldName = './public/saves/' + sceneTitle.toLowerCase().replace(' ', '_') + '.json';
+		const newName = './public/saves/' + e.target.value.toLowerCase().replace(' ', '_') + '.json';
+		// Add a checkmark animation in then block.
+		window['electronAPI'].renameSceneSave(oldName, newName).then();
+
+		setSceneTitle(e.target.value);
 	}
 
 
@@ -240,7 +260,7 @@ function Scene({ audioContext }) {
 					className='editor__content_title'
 					type='text'
 					value={ sceneTitle }
-					onChange={ (e) => setSceneTitle(e.target.value) }/>
+					onChange={ (e) => handleOnTitleSceneChange(e) }/>
 				<div className='editor__content_sounds-list'>
 					{ soundList.map((props) =>
 						<Sound
