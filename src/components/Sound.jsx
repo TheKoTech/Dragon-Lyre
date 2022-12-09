@@ -12,6 +12,7 @@ import PopupMenuItem from './PopupMenu/PopupMenuItem';
  * @param {number} Sound.volume
  * @param {number} Sound.minInterval
  * @param {number} Sound.maxInterval
+ * @param {AudioBufferSourceNode} Sound.source
  */
 function Sound({
 	               id,
@@ -19,10 +20,17 @@ function Sound({
 	               volume,
 	               minInterval,
 	               maxInterval,
-	               onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete
+	               source,
+	               onTitleChange, onPlayBtn, onVolumeChange, onIntervalChange, onDelete, onSoundEnd
                }) {
 	const [showPopupMenu, setShowPopupMenu] = useState(false);
 	const [paramsTab, setParamsTab] = useState(true);
+
+	if (source) {
+		source.onended = () => {
+			onSoundEnd(id, minInterval, maxInterval);
+		};
+	}
 
 	return (
 		<span className='sound'>

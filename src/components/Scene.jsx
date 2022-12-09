@@ -125,7 +125,7 @@ function Scene({ audioContext }) {
 	const handleVolumeChange = (event, id) => {
 		const sound = soundList.find(sound => sound.id === id);
 		if (sound.gainNode) {
-			sound.gainNode.gain.value = event.target.value;
+			sound.gainNode.gain.value = +event.target.value;
 		}
 
 		setSoundList(prevList => {
@@ -142,8 +142,6 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleIntervalChange = (event, id) => {
-		console.log(soundList);
-
 		setSoundList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
@@ -178,9 +176,29 @@ function Scene({ audioContext }) {
 	 */
 	const handleDeleteBtn = (id) => {
 		const sound = soundList.find(sound => sound.id === id);
-		SSSound.stopSound(audioContext, sound, true);
+		SSSound.stopSound(audioContext, sound);
 
 		setSoundList(prevList => prevList.filter(sound => sound.id !== id));
+	};
+
+	/**
+	 * @param {number} id
+	 * @param {number} minInterval
+	 * @param {number} maxInterval
+	 */
+	const handleSoundEnd = (id, minInterval, maxInterval) => {
+		const sound = soundList.find(sound => sound.id === id);
+
+		const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
+		const newSound = SSSound.startSound(audioContext, sound, randomInterval);
+
+		setSoundList(prevList => {
+			return prevList.map(sound => {
+				return sound.id === id
+					? newSound
+					: sound;
+			});
+		});
 	};
 
 	/**
@@ -223,6 +241,7 @@ function Scene({ audioContext }) {
 							onVolumeChange={ handleVolumeChange }
 							onIntervalChange={ handleIntervalChange }
 							onDelete={ handleDeleteBtn }
+							onSoundEnd={ handleSoundEnd }
 						/>
 					) }
 					<SoundAddBtn onClick={ handleAddSound }/>

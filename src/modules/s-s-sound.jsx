@@ -98,19 +98,16 @@ export default class SSSound {
 	/**
 	 * @param {AudioContext} audioContext
 	 * @param {SoundParameters} sound
-	 * @param {Boolean} disconnect If true, disconnects the source from the context.
 	 * @returns {SoundParameters}
 	 */
-	static stopSound(audioContext, sound, disconnect = false) {
+	static stopSound(audioContext, sound) {
 		const newSound = Object.assign({}, sound);
 
 		if (sound.source) {
-			if (disconnect) {
-				newSound.source.disconnect();
-			} else {
-				newSound.source.onended = null;
-				newSound.source.stop();
-			}
+			newSound.source.onended = null;
+			newSound.source.stop();
+			newSound.source = undefined;
+
 			newSound.isPlaying = false;
 			newSound.stoppedAt = audioContext.currentTime;
 		}
