@@ -57,7 +57,6 @@ function Sound({
 		if (soundStartTime !== undefined) {
 			const interval = setInterval(() => {
 				if (soundStartTime < Date.now()) {
-					console.log('end time', Date.now() / 1000);
 					setSoundStartTime(undefined);
 					onSoundEnd(id);
 				}
@@ -68,10 +67,7 @@ function Sound({
 
 	if (source) {
 		source.onended = () => {
-			console.log(minInterval, maxInterval);
 			const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
-			console.log('random interval', randomInterval);
-			console.log('start time', Date.now() / 1000);
 			setSoundStartTime(Date.now() + randomInterval * 1000);
 		};
 	}
@@ -88,7 +84,7 @@ function Sound({
 				<input
 					type='text'
 					value={ title }
-					onChange={ e => onTitleChange(e, id) }
+					onChange={ (e) => onTitleChange(e, id) }
 				/>
 				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) }/>
 				<IconButton iconName={ 'Options' } onClick={ () => setPopupMenuIsShown(true) }/>
@@ -113,7 +109,7 @@ function Sound({
 						step={ 0.01 }
 						className='volume_slider'
 						value={ volume }
-						onChange={ e => onVolumeChange(e, id) }
+						onChange={ (e) => onVolumeChange(e, id) }
 					/>
 					<label>
 						min interval:
@@ -122,7 +118,7 @@ function Sound({
 						type='number'
 						className='min-interval-input'
 						defaultValue={ minInterval }
-						onChange={ e => onMinIntervalChange(e, id) }/>
+						onChange={ (e) => onMinIntervalChange(e, id) }/>
 					<label>
 						max interval:
 					</label>
@@ -130,7 +126,7 @@ function Sound({
 						type='number'
 						className='max-interval-input'
 						defaultValue={ maxInterval }
-						onChange={ e => onMaxIntervalChange(e, id) }/>
+						onChange={ (e) => onMaxIntervalChange(e, id) }/>
 				</div>
 			) : (
 				<div className='sound-effects' style={ { color: `var(--clr-base-60)`, fontSize: `.9em` } }>
