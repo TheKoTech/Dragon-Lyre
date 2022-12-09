@@ -1,33 +1,6 @@
 export default class ASound {
 
 	// ========================================
-	// Types
-	// ========================================
-
-
-	/**
-	 * @typedef {Object} SoundParameters
-	 * @property {number} id Sound ID.
-	 * @property {string} title Representing the sound name.
-	 * @property {string} extension File extension.
-	 * @property {number} volume Sound volume (in the range from 0 to 1).
-	 * @property {number | undefined} startedAt Fractional number representing the start time of the sound (by time in
-	 *     the AudioContext).
-	 * @property {number | undefined} stoppedAt Fractional number representing the stop time of the sound (by time in
-	 *     the AudioContext).
-	 * @property {boolean} isPlaying Indicates whether the sound is playing. By default, is false.
-	 * @property {number} minInterval
-	 * @property {number} maxInterval
-	 * @property {AudioBuffer} buffer An object that contains all information about the sound file. From it, you can
-	 *     get AudioBufferSourceNode.
-	 * @property {GainNode | undefined} gainNode An object that allowing you to control the volume of the sound.
-	 *     Connected to the AudioContext
-	 * @property {AudioBufferSourceNode | undefined} source An object that represents a thread that directly controls
-	 *     audio playback. Connected to GainNode.
-	 */
-
-
-	// ========================================
 	// Adding Sound
 	// ========================================
 
@@ -56,12 +29,10 @@ export default class ASound {
 	 */
 	static addNewSoundsInSoundList(audioContext, soundListState, newSounds) {
 		const soundPromises = newSounds.map(async sound => {
-			const fileName = sound.title + '.' + sound.extension;
-
 			return {
 				...sound,
 				isPlaying: false,
-				buffer: await this.#getAudioBufferFromFile(audioContext, fileName),
+				buffer: await this.#getAudioBufferFromFile(audioContext, sound.fileName),
 			};
 		});
 
