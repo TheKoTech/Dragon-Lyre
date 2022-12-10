@@ -27,13 +27,13 @@
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"react": "cross-env BROWSER=none npm start",
-		"electron": "wait-on http://127.0.0.1:3000 && electronmon .",
-		"dev": "concurrently -k -n react,electron \"npm run react\" \"npm run electron\"",
+		"electronmon": "wait-on http://127.0.0.1:3000 && electronmon .",
+		"dev": "concurrently -k -n react,electronmon \"npm run react\" \"npm run electronmon\"",
 		"electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/electron.js",
-		"temp": "electron ."
+		"electron": "electron ."
 	},
 	"dependencies": {
-		"node": "^19.1.0",
+		"node": "^19.1.0", 
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-scripts": "^5.0.1"

@@ -1,0 +1,65 @@
+.sound {
+	display: flex;
+	position: relative;
+	background: var(--clr-base-20);
+	padding: 5px 15px 10px 15px;
+	flex-direction: column;
+	row-gap: 5px;
+	border-radius: 5px;
+	border: 1px solid var(--clr-border);
+	flex-shrink: 1;
+	flex-basis: 240px;
+	height: 160px;
+	box-sizing: border-box;
+}
+
+.sound-title {
+	display: flex;
+	gap: 8px;
+	justify-content: space-between;
+}
+
+.sound-title>input {
+	font-size: var(--font-size-h3);
+
+}
+
+.sound input {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.sound-play-btn {
+	display: block;
+}
+
+.sound .sound-title input {
+	border: none;
+	background: none;
+	color: var(--text-normal);
+}
+
+.sound .sound-title input:focus {
+	outline: none;
+}
+
+.effects-list {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.effects-list > * {
+	background: none;
+	font: inherit;
+	text-align: left;
+	border: none;
+	color: var(--clr-text-normal);
+	font-size: .9em;
+	padding: 3px 12px;
+	border-radius: 4px;
+}
+
+.effects-list > :hover {
+	background: var(--clr-base-25);
+}

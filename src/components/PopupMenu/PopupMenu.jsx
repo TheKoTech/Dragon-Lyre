@@ -4,10 +4,10 @@ import './PopupMenu.css';
 /**
  * @param {Object} PopupMenu
  * @param {PopupMenuItem[]} PopupMenu.children
- * @param {boolean} PopupMenu.isShown Whether the PopupMenu is shown.
+ * @param {boolean} PopupMenu.show Whether the PopupMenu is shown.
  * @param {Function} PopupMenu.onClickOutside Called on click outside the popup menu.
  */
-function PopupMenu({ children, isShown, onClickOutside }) {
+function PopupMenu({ children, show, onClickOutside }) {
 
 	const wrapperRef = useRef(null);
 
@@ -18,15 +18,15 @@ function PopupMenu({ children, isShown, onClickOutside }) {
 			}
 		}
 
-		document.addEventListener('mousedown', handleClickOutside);
+		document.addEventListener('mouseup', handleClickOutside);
 
 		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('mouseup', handleClickOutside);
 		};
 	}, [onClickOutside]);
 
 
-	if (!isShown)
+	if (!show)
 		return null;
 
 	return (

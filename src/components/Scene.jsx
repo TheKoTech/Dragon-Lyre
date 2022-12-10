@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './css/Scene.css';
 
-import Sound from './Sound';
+import Sound from './Sound/Sound';
 import Toolbar from './Toolbar';
 import SoundAddBtn from './SoundAddBtn';
 import SceneSidebar from './SceneSidebar';
@@ -167,22 +167,28 @@ function Scene({ audioContext }) {
 		});
 	};
 
-	/**
-	 */
 	const handleAddSound = () => {
 		ASound.selectFiles().then(files => {
 			let id = ASound.getNewElementId(soundList);
 
-			ASound.addNewSoundsInSoundList(audioContext, soundListState, files.map(file => {
-				return {
-					id: id += 1,
-					title: file.name.substring(0, file.name.lastIndexOf('.')),
-					fileName: file.name,
-					volume: 0.5,
-					minInterval: 0,
-					maxInterval: 5,
-				};
-			}));
+			ASound.addNewSoundsInSoundList(audioContext, soundListState, files.map(file => ({
+				id: id += 1,
+				title: file.name.substring(0, file.name.lastIndexOf('.')),
+				fileName: file.name,
+				volume: 0.5,
+				minInterval: 0,
+				maxInterval: 5,
+				effectsList: [
+					{
+						id: 1,
+						name: 'Reverb',
+					},
+					{
+						id: 2,
+						name: 'Distortion',
+					},
+				],
+			})));
 		});
 	};
 
@@ -248,19 +254,28 @@ function Scene({ audioContext }) {
 		setSceneTitle(e.target.value);
 	}
 
+	/**
+	 * @param {number} soundId
+	 * @param {number} effectId
+	 */
+	function handleEffectClick(soundId, effectId) {
+		const sound = soundList.find(sound => sound.id === soundId)
+		const effect = sound.effectsList.find(effect => effect.id === effectId)
+		console.log(`Effect ${ effect.name } clicked`);
+	}
 
 	return (
 		<div className='editor'>
 			<div className='editor__sidebar'>
-				<SceneSidebar/>
+				<SceneSidebar />
 			</div>
 			<div className='editor__content'>
-				<Toolbar onSave={ handleOnSave }/>
+				<Toolbar onSave={ handleOnSave } />
 				<input
 					className='editor__content_title'
 					type='text'
 					value={ sceneTitle }
-					onChange={ (e) => handleOnTitleSceneChange(e) }/>
+					onChange={ (e) => handleOnTitleSceneChange(e) } />
 				<div className='editor__content_sounds-list'>
 					{ soundList.map((props) =>
 						<Sound
@@ -273,9 +288,10 @@ function Scene({ audioContext }) {
 							onMaxIntervalChange={ handleMaxIntervalChange }
 							onDelete={ handleDeleteBtn }
 							onSoundEnd={ handleSoundEnd }
+							onEffectClick={ handleEffectClick }
 						/>
 					) }
-					<SoundAddBtn onClick={ handleAddSound }/>
+					<SoundAddBtn onClick={ handleAddSound } />
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import './css/Sound.css';
-
-import IconButton from './IconButton';
-import PopupMenu from './PopupMenu/PopupMenu';
-import PopupMenuItem from './PopupMenu/PopupMenuItem';
+import PopupMenuItem from '../PopupMenu/PopupMenuItem';
+import IconButton from '../IconButton';
+import PopupMenu from '../PopupMenu/PopupMenu';
+import EffectsList from './EffectsList';
+import './Sound.css';
 
 /**
  * @param {Object} Sound
@@ -13,6 +13,7 @@ import PopupMenuItem from './PopupMenu/PopupMenuItem';
  * @param {number} Sound.minInterval
  * @param {number} Sound.maxInterval
  * @param {AudioBufferSourceNode} Sound.source
+ * @param {Array} Sound.effectsList
  * @param {function(id: number)} Sound.onPlayBtn
  * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onTitleChange
  * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onVolumeChange
@@ -20,25 +21,28 @@ import PopupMenuItem from './PopupMenu/PopupMenuItem';
  * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onMaxIntervalChange
  * @param {function(id: number)} Sound.onDelete
  * @param {function(id: number)} Sound.onSoundEnd
+ * @param {function(soundId: number, effectId: number)} Sound.onEffectClick
  */
 function Sound({
-	               id,
-	               title,
-	               volume,
-	               minInterval,
-	               maxInterval,
-	               source,
-	               onPlayBtn,
-	               onTitleChange,
-	               onVolumeChange,
-	               onMinIntervalChange,
-	               onMaxIntervalChange,
-	               onDelete,
-	               onSoundEnd
-               }) {
+	id,
+	title,
+	volume,
+	minInterval,
+	maxInterval,
+	source,
+	effectsList,
+	onPlayBtn,
+	onTitleChange,
+	onVolumeChange,
+	onMinIntervalChange,
+	onMaxIntervalChange,
+	onDelete,
+	onSoundEnd,
+	onEffectClick,
+}) {
 
-	/**
-	 * @type [boolean, Dispatch<SetStateAction<boolean>>]
+	/** 
+	 * @type [boolean, Dispatch<SetStateAction<boolean>>] 
 	 */
 	const popupMenuIsShownState = useState(false);
 	const [popupMenuIsShown, setPopupMenuIsShown] = popupMenuIsShownState;
@@ -75,7 +79,7 @@ function Sound({
 
 	return (
 		<span className='sound'>
-			<div className='sound_title'>
+			<div className='sound-title'>
 				<input
 					type='button'
 					value='Play'
@@ -86,8 +90,8 @@ function Sound({
 					value={ title }
 					onChange={ (e) => onTitleChange(e, id) }
 				/>
-				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) }/>
-				<IconButton iconName={ 'Options' } onClick={ () => setPopupMenuIsShown(true) }/>
+				<IconButton iconName={ 'Effects' } onClick={ () => setParamsTab(prevState => !prevState) } />
+				<IconButton iconName={ 'Options' } onClick={ () => setPopupMenuIsShown(true) } />
 			</div>
 			<PopupMenu
 				show={ popupMenuIsShown }
@@ -95,10 +99,12 @@ function Sound({
 			>
 				<PopupMenuItem
 					text={ `Duplicate` }
-					onClick={ () => null }/>
+					onClick={ () => null }
+				/>
 				<PopupMenuItem
 					text={ `Delete` }
-					onClick={ () => onDelete(id) }/>
+					onClick={ () => onDelete(id) }
+				/>
 			</PopupMenu>
 			{ paramsTab ? (
 				<div className='sound-parameters'>
@@ -118,7 +124,8 @@ function Sound({
 						type='number'
 						className='min-interval-input'
 						defaultValue={ minInterval }
-						onChange={ (e) => onMinIntervalChange(e, id) }/>
+						onChange={ (e) => onMinIntervalChange(e, id) }
+					/>
 					<label>
 						max interval:
 					</label>
@@ -126,12 +133,11 @@ function Sound({
 						type='number'
 						className='max-interval-input'
 						defaultValue={ maxInterval }
-						onChange={ (e) => onMaxIntervalChange(e, id) }/>
+						onChange={ (e) => onMaxIntervalChange(e, id) }
+					/>
 				</div>
 			) : (
-				<div className='sound-effects' style={ { color: `var(--clr-base-60)`, fontSize: `.9em` } }>
-					effects list is to be rendered (it's not even designed yet)
-				</div>
+				<EffectsList effectsList={ effectsList } onClick={ (effectId) => onEffectClick(id, effectId) } />
 			)
 			}
 		</span>
