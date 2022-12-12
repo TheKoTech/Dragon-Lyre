@@ -1,0 +1,20 @@
+.window-controls {
+	display: flex;
+	height: 36px;
+	width: fit-content;
+}
+
+.window-controls-button {
+	display: flex;
+	width: 40px;
+	align-items: center;
+	justify-content: center;
+}
+
+.window-controls-button:hover {
+	background: var(--clr-base-30);
+}
+
+.window-controls> :last-child:hover {
+	background: var(--clr-red);
+}

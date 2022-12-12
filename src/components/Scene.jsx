@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './css/Scene.css';
 
 import Sound from './Sound/Sound';
-import Toolbar from './Toolbar';
+import EditorTitlebar from './EditorTitlebar';
 import SoundAddBtn from './SoundAddBtn';
 import SceneSidebar from './SceneSidebar';
 import SSSound from '../modules/s-s-sound';
@@ -270,7 +270,7 @@ function Scene({ audioContext }) {
 				<SceneSidebar />
 			</div>
 			<div className='editor__content'>
-				<Toolbar onSave={ handleOnSave } />
+				<EditorTitlebar onSave={ handleOnSave } />
 				<input
 					className='editor__content_title'
 					type='text'

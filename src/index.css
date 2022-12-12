@@ -51,6 +51,13 @@ h3 {
 	font-size: var(--font-size-h3);
 }
 
+button, input {
+	background: transparent;
+	border: none;
+	font: inherit;
+	color: var(--clr-text-normal);
+}
+
 :focus {
 	outline: 2px solid var(--clr-red);
 	outline-offset: -1px;
