@@ -163,7 +163,7 @@ function Scene({ audioContext }) {
 		});
 	};
 
-	const handleAddSound = () => {
+	const handleAddSoundBtn = () => {
 		AddingSound.selectFiles().then(files => {
 			let id = AddingSound.getNewElementId(soundsList);
 
@@ -222,7 +222,7 @@ function Scene({ audioContext }) {
 	/**
 	 * @param {MouseEvent<HTMLButtonElement>} e
 	 */
-	function handleOnSave(e) {
+	function handleSaveBtn(e) {
 		const jsonString = JSON.stringify({
 			title: sceneTitle,
 			sounds: soundsList.map(sound => {
@@ -270,7 +270,7 @@ function Scene({ audioContext }) {
 				<SceneSidebar />
 			</div>
 			<div className='editor__content'>
-				<EditorTitlebar onSave={ handleOnSave } />
+				<EditorTitlebar onSave={ handleSaveBtn } />
 				<input
 					className='editor__content_title'
 					type='text'
@@ -291,7 +291,7 @@ function Scene({ audioContext }) {
 							onEffectClick={ handleEffectClick }
 						/>
 					) }
-					<SoundAddBtn onClick={ handleAddSound } />
+					<SoundAddBtn onClick={ handleAddSoundBtn } />
 				</div>
 			</div>
 		</div>
