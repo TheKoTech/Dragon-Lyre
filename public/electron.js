@@ -1,5 +1,6 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const localShortcut = require('electron-localshortcut');
 const { readdir, readFile, writeFile, rename } = require('node:fs/promises');
 const { existsSync, mkdirSync } = require('fs');
 
@@ -17,8 +18,7 @@ function createWindow() {
 		}
 	});
 	win.removeMenu();
-	registerGlobalShortcuts(win);
-
+	registerLocalShortcuts(win);
 
 	if (app.isPackaged) {
 		win.loadFile(path.resolve(__dirname, 'index.html')).then();
@@ -29,12 +29,9 @@ function createWindow() {
 	return win;
 }
 
-function registerGlobalShortcuts(mainWindow) {
-	globalShortcut.register('F5', () => {
-		mainWindow.reload();
-	});
-	globalShortcut.register('CommandOrControl+R', () => {
-		mainWindow.reload();
+function registerLocalShortcuts(win) {
+	localShortcut.register(win, ['CommandOrControl+R', 'F5'], () => {
+		win.reload();
 	});
 }
 
