@@ -1,9 +1,4 @@
-export default class ASound {
-
-	// ========================================
-	// Adding Sound
-	// ========================================
-
+export default class AddingSound {
 
 	/**
 	 * @returns {Promise<File[]>} A promise of a file or array of files if the multiple parameter is true.
