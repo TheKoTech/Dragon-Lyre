@@ -4,9 +4,10 @@ const { readdir, readFile, writeFile, rename } = require('node:fs/promises');
 const { existsSync, mkdirSync } = require('fs');
 
 function createWindow() {
-	const mainWindow = new BrowserWindow({
+	const win = new BrowserWindow({
 		minWidth: 800,
 		minHeight: 600,
+		frame: false,
 		webPreferences: {
 			// Set the path of an additional "preload" script that can be used to
 			// communicate between node-land and browser-land.
@@ -15,17 +16,17 @@ function createWindow() {
 			devTools: true // Must be disabled before build the project.
 		}
 	});
-	mainWindow.removeMenu();
-	registerGlobalShortcuts(mainWindow);
+	win.removeMenu();
+	registerGlobalShortcuts(win);
 
 
 	if (app.isPackaged) {
-		mainWindow.loadFile(path.resolve(__dirname, 'index.html')).then();
+		win.loadFile(path.resolve(__dirname, 'index.html')).then();
 	} else {
-		mainWindow.loadURL('http://localhost:3000').then();
-		mainWindow.webContents.openDevTools({ mode: 'detach' });
+		win.loadURL('http://localhost:3000').then();
+		win.webContents.openDevTools({ mode: 'detach' });
 	}
-	return mainWindow;
+	return win;
 }
 
 function registerGlobalShortcuts(mainWindow) {
@@ -67,7 +68,7 @@ app.on('window-all-closed', () => {
 // ========================================
 
 
-ipcMain.handle('app:get-files-from-folder', (event, folderName) => {
+ipcMain.handle('save:get-files-from-folder', (event, folderName) => {
 	return readdir(folderName);
 });
 
@@ -98,4 +99,21 @@ ipcMain.handle('save:rename-scene', (event, oldName, newName) => {
 			return null;
 		}
 	});
+});
+
+ipcMain.handle('app:minimize', () => {
+	BrowserWindow.getFocusedWindow().minimize();
+});
+
+ipcMain.handle('app:maximize', () => {
+	const win = BrowserWindow.getFocusedWindow();
+	if (win.isMaximized()) {
+		win.unmaximize();
+	} else {
+		win.maximize();
+	}
+});
+
+ipcMain.handle('app:close', () => {
+	BrowserWindow.getFocusedWindow().close();
 });
