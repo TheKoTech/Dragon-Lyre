@@ -17,7 +17,7 @@ function SceneSidebar() {
 	const [fileList, setFileList] = fileState;
 
 	useEffect(() => {
-		const files = window['electronAPI'].getFilesFromFolder('./public/sounds');
+		const files = window['sceneAPI'].getFilesFromFolder('./public/sounds');
 		files.then(resolve => {
 			setFileList(resolve.map(file => {
 				return {

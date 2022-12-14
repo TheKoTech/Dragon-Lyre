@@ -55,7 +55,7 @@ function Scene({ audioContext }) {
 	const [sceneTitle, setSceneTitle] = useState('New Scene');
 
 	useEffect(() => {
-		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/new_scene.json');
+		const sceneSave = window['sceneAPI'].readSceneSave('./public/saves/new_scene.json');
 
 		sceneSave.then(resolve => {
 			if (resolve === null) return;
@@ -238,7 +238,7 @@ function Scene({ audioContext }) {
 
 		const saveFileName = sceneTitle.toLowerCase().replace(' ', '_') + '.json';
 		// Add a checkmark animation in then block.
-		window['electronAPI'].writeSceneSave(`./public/saves/${ saveFileName }`, jsonString).then();
+		window['sceneAPI'].writeSceneSave(`./public/saves/${ saveFileName }`, jsonString).then();
 	}
 
 	/**
@@ -249,7 +249,7 @@ function Scene({ audioContext }) {
 		const oldName = './public/saves/' + sceneTitle.toLowerCase().replace(' ', '_') + '.json';
 		const newName = './public/saves/' + e.target.value.toLowerCase().replace(' ', '_') + '.json';
 		// Add a checkmark animation in then block.
-		window['electronAPI'].renameSceneSave(oldName, newName).then();
+		window['sceneAPI'].renameSceneSave(oldName, newName).then();
 
 		setSceneTitle(e.target.value);
 	}
