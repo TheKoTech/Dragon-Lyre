@@ -9,8 +9,8 @@ kanban-plugin: basic
 - [ ] Варианты сцен:<br>- Полностью разные сцены.<br>- Одна сцена содержит разные настройки звуков в ней.<br>- Наследование сцен. Все звуки базовой сцены есть в дочерних.
 - [ ] Полоса прогресса:<br>- Показывает время до старта звука. Например, убывающая полоска (вначале полная, потом становится пустой).<br>- Показывает время до окончания звука. Например, возрастающая полоска (вначале пустая, потом становится полной).
 - [ ] Отображение частот, проигрываемых в данный момент. Мне больше нравится стиль "Гистограмма".
-- [ ] Drag&Drop для звуков:<br>- Добавление звуков из левой панели<br>- Удаление звуков<br>- Перемещение звуков внутри сцены
 - [ ] Отмена / повтор действий пользователя
+- [ ] Пересесть с иглы CSS на лицо SCSS
 
 
 ## ### Общие
@@ -23,11 +23,11 @@ kanban-plugin: basic
 
 ## ### <div style='color: #297bff'>Задачи Вовы</div>
 
-- [ ] [[Закончить дизайн интерфейса]]<br><br>@{2022-12-07}
-- [ ] Реализовать макет интерфейса<br><br>@{2022-12-11}
-- [ ] Интерфейс для добавления звуковых эффектов @{2022-12-17}
-- [ ] Пересесть с иглы CSS на лицо SCSS
-- [ ] Показать :focus CSS property только после нажатия Tab, убирать на любой клик
+- [ ] Реализовать интерфейс для добавления звуковых эффектов @{2022-12-17}
+- [ ] [[Закончить дизайн редактора сцен]]<br><br>@{2022-12-24}
+- [ ] Реализовать макет интерфейса<br><br>@{2023-01-07}
+- [ ] Drag&Drop для звуков:<br>- Добавление звуков из левой панели<br>- Удаление звуков<br>- Перемещение звуков внутри сцены
+- [ ] Показать :focus CSS property только после нажатия Tab, убирать на любой клик<br><br>#accessibility
 
 
 ## ### <div style='color: #f29500'>Задачи Димы</div>
@@ -63,6 +63,6 @@ kanban-plugin: basic
 
 %% kanban:settings
 ```
-{"kanban-plugin":"basic","new-card-insertion-method":"append","show-checkboxes":false,"hide-date-display":false,"show-relative-date":true,"date-picker-week-start":1,"hide-date-in-title":true,"date-display-format":"DD.MM.YY","date-colors":[{"distance":1,"unit":"days","direction":"after","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(0, 0, 0, 1)","isBefore":true},{"isToday":false,"distance":3,"unit":"days","direction":"after","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(255, 0, 0, 1)"},{"isToday":false,"distance":14,"unit":"days","direction":"after","backgroundColor":"rgba(255, 252, 85, 1)","color":"rgba(0, 0, 0, 1)"},{"distance":1,"unit":"days","direction":"after","isAfter":true,"backgroundColor":"rgba(118, 118, 118, 1)","color":"rgba(255, 255, 255, 1)"}],"tag-colors":[{"tagKey":"#Вова","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(48, 106, 255, 1)"},{"tagKey":"#Дима","color":"rgba(0, 0, 0, 1)","backgroundColor":"rgba(242, 149, 0, 1)"}],"hide-tags-in-title":true,"hide-tags-display":false,"hide-card-count":true,"new-line-trigger":"enter"}
+{"kanban-plugin":"basic","new-card-insertion-method":"append","show-checkboxes":false,"hide-date-display":false,"show-relative-date":true,"date-picker-week-start":1,"hide-date-in-title":true,"date-display-format":"DD.MM.YY","date-colors":[{"distance":1,"unit":"days","direction":"after","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(0, 0, 0, 1)","isBefore":true},{"isToday":false,"distance":3,"unit":"days","direction":"after","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(255, 0, 0, 1)"},{"isToday":false,"distance":14,"unit":"days","direction":"after","backgroundColor":"rgba(255, 252, 85, 1)","color":"rgba(0, 0, 0, 1)"},{"distance":1,"unit":"days","direction":"after","isAfter":true,"backgroundColor":"rgba(118, 118, 118, 1)","color":"rgba(255, 255, 255, 1)"}],"tag-colors":[{"tagKey":"#Вова","color":"rgba(255, 255, 255, 1)","backgroundColor":"rgba(48, 106, 255, 1)"},{"tagKey":"#Дима","color":"rgba(0, 0, 0, 1)","backgroundColor":"rgba(242, 149, 0, 1)"},{"tagKey":"#accessibility","color":"","backgroundColor":"rgba(55, 255, 61, 0.1)"}],"hide-tags-in-title":true,"hide-tags-display":false,"hide-card-count":true,"new-line-trigger":"enter"}
 ```
 %%
