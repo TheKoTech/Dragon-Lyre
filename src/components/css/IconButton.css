@@ -2,6 +2,8 @@
 	display: flex;
 	padding: 4px;
 	border-radius: 5px;
+
+	-webkit-app-region: no-drag;
 }
 
 :is(.icon-button:hover, .icon-button.active) {
