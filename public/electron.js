@@ -6,7 +6,7 @@ const { existsSync, mkdirSync } = require('fs');
 
 function createWindow() {
 	const win = new BrowserWindow({
-		minWidth: 800,
+		minWidth: 600,
 		minHeight: 600,
 		frame: false,
 		webPreferences: {
@@ -24,7 +24,7 @@ function createWindow() {
 		win.loadFile(path.resolve(__dirname, 'index.html')).then();
 	} else {
 		win.loadURL('http://localhost:3000').then();
-		win.webContents.openDevTools({ mode: 'detach' });
+		win.webContents.openDevTools();
 	}
 	return win;
 }
