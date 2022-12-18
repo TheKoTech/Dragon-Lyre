@@ -21,7 +21,9 @@ import './Sound.css';
  * @param {function(e: ChangeEvent<HTMLInputElement>, id: number)} Sound.onMaxIntervalChange
  * @param {function(id: number)} Sound.onDelete
  * @param {function(id: number)} Sound.onSoundEnd
- * @param {function(soundId: number, effectId: number)} Sound.onEffectClick
+ * @param {function} Sound.onAddEffect
+ * @param {function} Sound.onEffectParamChange
+ * @param {function} Sound.onDeleteEffect
  */
 function Sound({
 	id,
@@ -38,24 +40,19 @@ function Sound({
 	onMaxIntervalChange,
 	onDelete,
 	onSoundEnd,
-	onEffectClick,
+	onAddEffect,
+	onEffectParamChange,
+	onDeleteEffect,
 }) {
 
-	/** 
-	 * @type [boolean, Dispatch<SetStateAction<boolean>>] 
-	 */
-	const popupMenuIsShownState = useState(false);
-	const [popupMenuIsShown, setPopupMenuIsShown] = popupMenuIsShownState;
-	/**
-	 * @type [boolean, Dispatch<SetStateAction<boolean>>]
-	 */
-	const paramsTabState = useState(true);
-	const [paramsTab, setParamsTab] = paramsTabState;
-	/**
-	 * @type [number, Dispatch<SetStateAction<number>>]
-	 */
-	const timeToStartSoundState = useState(undefined);
-	const [soundStartTime, setSoundStartTime] = timeToStartSoundState;
+	/** @type [boolean, Dispatch<SetStateAction<boolean>>] */
+	const [popupMenuIsShown, setPopupMenuIsShown] = useState(false);
+
+	/** @type [boolean, Dispatch<SetStateAction<boolean>>]*/
+	const [paramsTab, setParamsTab] = useState(true);
+
+	/** @type [number, Dispatch<SetStateAction<number>>] */
+	const [soundStartTime, setSoundStartTime] = useState();
 
 	useEffect(() => {
 		if (soundStartTime !== undefined) {
@@ -137,7 +134,12 @@ function Sound({
 					/>
 				</div>
 			) : (
-				<EffectsList effectsList={ effectsList } onClick={ (effectId) => onEffectClick(id, effectId) } />
+				<EffectsList
+					effectsList={ effectsList }
+					onAddEffect={ (effectName) => onAddEffect(id, effectName) }
+					onEffectParamChange={ (e, effectId, param) => { onEffectParamChange(e, id, effectId, param) } }
+					onDeleteEffect={ (effectId) => onDeleteEffect(id, effectId) }
+				/>
 			)
 			}
 		</span>

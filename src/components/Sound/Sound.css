@@ -1,16 +1,18 @@
 .sound {
-	display: flex;
 	position: relative;
-	background: var(--clr-base-20);
-	padding: 5px 15px 10px 15px;
+	display: flex;
 	flex-direction: column;
-	row-gap: 5px;
-	border-radius: 5px;
-	border: 1px solid var(--clr-border);
 	flex-shrink: 1;
 	flex-basis: 240px;
-	height: 160px;
+	row-gap: 5px;
 	box-sizing: border-box;
+	height: 160px;
+	
+	border-radius: 5px;
+	padding: 5px 15px 10px 15px;
+	background: var(--clr-base-20);
+	border: 1px solid var(--clr-border);
+	user-select: none;
 }
 
 .sound-title {
@@ -49,17 +51,37 @@
 	gap: 3px;
 }
 
-.effects-list > * {
-	background: none;
-	font: inherit;
-	text-align: left;
-	border: none;
-	color: var(--clr-text-normal);
+:is(.effects-list-item, .effects-add-button) {
+	position: relative;
+
 	font-size: .9em;
-	padding: 3px 12px;
+	padding: 3px 6px 3px 12px;
 	border-radius: 4px;
+	cursor: pointer;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.effects-list > :hover {
+:is(.effects-list-item, .effects-add-button):hover {
 	background: var(--clr-base-25);
+}
+
+.effects-list-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 3px;
+}
+
+.effects-list-item label {
+	cursor: inherit;
+	width: 100%;
+}
+
+.effects-list-item__title-row {
+	display: flex;
+	width: 100%;
+	align-items: center;
 }

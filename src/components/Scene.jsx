@@ -7,6 +7,7 @@ import SoundAddBtn from './SoundAddBtn';
 import SceneSidebar from './SceneSidebar';
 import SoundReproduction from '../modules/sound-reproduction';
 import AddingSound from '../modules/adding-sound';
+import EffectParam from '../modules/effectParam'
 import { DEFAULT_SOUND_MAX_INTERVAL, DEFAULT_SOUND_MIN_INTERVAL, DEFAULT_SOUND_VOLUME } from '../modules/constants';
 
 
@@ -178,14 +179,23 @@ function Scene({ audioContext }) {
 					{
 						id: 0,
 						name: 'Echo',
+						params: [
+							new EffectParam('Strength', .6, 0, 1, 'range'),
+						],
 					},
 					{
 						id: 1,
 						name: 'Distortion',
+						params: [
+							new EffectParam('Strength', .8, 0, 1, 'range'),
+						],
 					},
 					{
 						id: 2,
 						name: 'Pitch Shift',
+						params: [
+							new EffectParam('Strength', .3, 0, 1, 'range'),
+						],
 					},
 				],
 			})));
@@ -242,6 +252,30 @@ function Scene({ audioContext }) {
 	}
 
 	/**
+	 * @param {number} soundId 
+	 * @param {string} effectName 
+	 */
+	function handleAddEffect(soundId, effectName) {
+		console.log(`Sound with id ${ soundId } requests the ${ effectName } effect`);
+	}
+
+	/**
+	 * @param {Event} e 
+	 * @param {number} soundId
+	 * @param {number} effectId
+	 * @param {EffectParam} effectParam 
+	 */
+	function handleEffectParamChange(e, soundId, effectId, effectParam) {
+		console.log(
+			`Sound with id ${ soundId } requests the effect with id ${ effectId } to change ${ effectParam.name } param to ${ e.target.value }`
+		);
+	}
+
+	function handleDeleteEffect(soundId, effectId) {
+		console.log(`Sound widht id ${ soundId } requests the effect with id ${ effectId } to be deleted.`);
+	}
+
+	/**
 	 *
 	 * @param e
 	 */
@@ -252,16 +286,6 @@ function Scene({ audioContext }) {
 		window['sceneAPI'].renameSceneSave(oldName, newName).then();
 
 		setSceneTitle(e.target.value);
-	}
-
-	/**
-	 * @param {number} soundId
-	 * @param {number} effectId
-	 */
-	function handleEffectClick(soundId, effectId) {
-		const sound = soundsList.find(sound => sound.id === soundId)
-		const effect = sound.effectsList.find(effect => effect.id === effectId)
-		console.log(`Effect ${ effect.name } clicked`);
 	}
 
 	return (
@@ -288,7 +312,9 @@ function Scene({ audioContext }) {
 							onMaxIntervalChange={ handleMaxIntervalChange }
 							onDelete={ handleDeleteBtn }
 							onSoundEnd={ handleSoundEnd }
-							onEffectClick={ handleEffectClick }
+							onAddEffect={ handleAddEffect }
+							onEffectParamChange={ handleEffectParamChange }
+							onDeleteEffect={ handleDeleteEffect }
 						/>
 					) }
 					<SoundAddBtn onClick={ handleAddSoundBtn } />
