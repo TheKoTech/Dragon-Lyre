@@ -29,8 +29,10 @@ body {
 	--clr-base-100: rgb(255 255 255);
 	--clr-text-normal: rgb(255 255 255);
 	--clr-red: rgb(255 69 69);
+	--clr-blue: rgb(21, 115, 255);
 	--clr-border: rgb(255 255 255 / .1);
 	--clr-highlight: rgb(255 255 255 / .1);
+	--clr-highlight-2: rgb(255 255 255 / .2);
 
 	--shadow-normal: 0 8px 8px rgb(0 0 0 / .2);
 
@@ -56,9 +58,10 @@ button, input {
 	border: none;
 	font: inherit;
 	color: var(--clr-text-normal);
+	box-sizing: border-box;
 }
 
-:focus {
+/* :focus {
 	outline: 2px solid var(--clr-red);
 	outline-offset: -1px;
-}
+} */

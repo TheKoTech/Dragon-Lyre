@@ -21,12 +21,7 @@
 
 .sound-title>input {
 	font-size: var(--font-size-h3);
-
-}
-
-.sound input {
 	width: 100%;
-	box-sizing: border-box;
 }
 
 .sound-play-btn {

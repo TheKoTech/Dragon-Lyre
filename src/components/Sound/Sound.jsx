@@ -4,6 +4,9 @@ import IconButton from '../IconButton';
 import PopupMenu from '../PopupMenu/PopupMenu';
 import EffectsList from './EffectsList';
 import './Sound.css';
+import Slider from '../Sliders/Slider';
+import DoubleSlider from '../Sliders/DoubleSlider';
+import RangeSlider from 'react-range-slider-input/dist/components/RangeSlider';
 
 /**
  * @param {Object} Sound
@@ -76,6 +79,11 @@ function Sound({
 		};
 	}
 
+	const [sliderValue, setSliderValue] = useState([15, 45]);
+
+	function handleSliderChange(e) {
+		console.log(e)
+	}
 
 	return (
 		<span className='sound'>
@@ -108,32 +116,19 @@ function Sound({
 			</PopupMenu>
 			{ paramsTab ? (
 				<div className='sound-parameters'>
-					<input
-						type='range'
+					<Slider
+						value={ volume }
 						min={ 0.0 }
 						max={ 1.0 }
 						step={ 0.01 }
-						className='volume_slider'
-						value={ volume }
-						onChange={ (e) => onVolumeChange(e, id) }
+						onChange={ (e) => { onVolumeChange(e, id); console.log('slider'); } }
 					/>
-					<label>
-						min interval:
-					</label>
-					<input
-						type='number'
-						className='min-interval-input'
-						defaultValue={ minInterval }
-						onChange={ (e) => onMinIntervalChange(e, id) }
-					/>
-					<label>
-						max interval:
-					</label>
-					<input
-						type='number'
-						className='max-interval-input'
-						defaultValue={ maxInterval }
-						onChange={ (e) => onMaxIntervalChange(e, id) }
+					<RangeSlider
+						min={ 0.0 }
+						max={ 1.0 }
+						step={ 0.01 }
+						value={ sliderValue }
+						onChange={ handleSliderChange }
 					/>
 				</div>
 			) : (
