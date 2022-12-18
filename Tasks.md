@@ -30,6 +30,7 @@ kanban-plugin: basic
 - [ ] Показать :focus CSS property только после нажатия Tab, убирать на любой клик<br><br>#accessibility
 - [ ] [[Интеграция с React-slider]]
 - [ ] [[Найти способ организовать CSS]]
+- [ ] [[Переделать PopupMenu.jsx]]
 
 
 ## ### <div style='color: #f29500'>Задачи Димы</div>
