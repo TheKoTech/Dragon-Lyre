@@ -17,7 +17,6 @@ function createWindow() {
 			devTools: true // Must be disabled before build the project.
 		}
 	});
-	win.removeMenu();
 	registerLocalShortcuts(win);
 
 	if (app.isPackaged) {
