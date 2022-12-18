@@ -9,12 +9,14 @@
 	width: 40px;
 	align-items: center;
 	justify-content: center;
+
+	-webkit-app-region: no-drag;
 }
 
 .window-controls-button:hover {
 	background: var(--clr-base-30);
 }
 
-.window-controls> :last-child:hover {
+.window-controls > :last-child:hover {
 	background: var(--clr-red);
 }

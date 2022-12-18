@@ -5,8 +5,9 @@ import Sound from './Sound/Sound';
 import EditorTitlebar from './EditorTitlebar';
 import SoundAddBtn from './SoundAddBtn';
 import SceneSidebar from './SceneSidebar';
-import SSSound from '../modules/s-s-sound';
-import ASound from '../modules/a-sound';
+import SoundReproduction from '../modules/sound-reproduction';
+import AddingSound from '../modules/adding-sound';
+import { DEFAULT_SOUND_MAX_INTERVAL, DEFAULT_SOUND_MIN_INTERVAL, DEFAULT_SOUND_VOLUME } from '../modules/constants';
 
 
 /**
@@ -31,14 +32,15 @@ function Scene({ audioContext }) {
 	 * @property {number | undefined} stoppedAt Fractional number representing the stop time of the sound (by time in
 	 *     the AudioContext).
 	 * @property {boolean} isPlaying Indicates whether the sound is playing. By default, is false.
-	 * @property {number} minInterval
-	 * @property {number} maxInterval
+	 * @property {number} minInterval Minimum interval between sound repetitions (in seconds).
+	 * @property {number} maxInterval Maximum interval between sound repetitions (in seconds).
 	 * @property {AudioBuffer} buffer An object that contains all information about the sound file. From it, you can
 	 *     get AudioBufferSourceNode.
 	 * @property {GainNode | undefined} gainNode An object that allowing you to control the volume of the sound.
 	 *     Connected to the AudioContext
 	 * @property {AudioBufferSourceNode | undefined} source An object that represents a thread that directly controls
 	 *     audio playback. Connected to GainNode.
+	 * @property {Object} effectsList List containing effect nodes.
 	 */
 
 
@@ -47,19 +49,13 @@ function Scene({ audioContext }) {
 	// ========================================
 
 
-	/**
-	 * @type [SoundParameters[], Dispatch<SetStateAction<SoundParameters[]>>]
-	 */
-	const soundListState = useState([]);
-	const [soundList, setSoundList] = soundListState;
-	/**
-	 * @type [string, Dispatch<SetStateAction<string>>]
-	 */
-	const sceneTitleState = useState('New Scene');
-	const [sceneTitle, setSceneTitle] = sceneTitleState;
+	/** @type [SoundParameters[], Dispatch<SetStateAction<SoundParameters[]>>] */
+	const soundsListState = useState([]);
+	const [soundsList, setSoundsList] = soundsListState;
+	const [sceneTitle, setSceneTitle] = useState('New Scene');
 
 	useEffect(() => {
-		const sceneSave = window['electronAPI'].readSceneSave('./public/saves/new_scene.json');
+		const sceneSave = window['sceneAPI'].readSceneSave('./public/saves/new_scene.json');
 
 		sceneSave.then(resolve => {
 			if (resolve === null) return;
@@ -67,10 +63,10 @@ function Scene({ audioContext }) {
 			const json = JSON.parse(resolve);
 			setSceneTitle(json['title']);
 
-			let id = ASound.getNewElementId(soundList);
-			ASound.addNewSoundsInSoundList(audioContext, soundListState, json['sounds'].map(soundJson => {
+			let id = AddingSound.getNewElementId(soundsList);
+			AddingSound.addNewSoundsInSoundList(audioContext, soundsListState, json['sounds'].map(soundJson => {
 				return {
-					id: id += 1,
+					id: id++,
 					title: soundJson.title,
 					fileName: soundJson.fileName,
 					volume: soundJson.volume,
@@ -92,7 +88,7 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleSoundTitleChange = (e, id) => {
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, title: e.target.value }
@@ -105,13 +101,13 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handlePlayBtn = (id) => {
-		const sound = soundList.find(sound => sound.id === id);
+		const sound = soundsList.find(sound => sound.id === id);
 
 		const newSound = sound.isPlaying
-			? SSSound.stopSound(audioContext, sound)
-			: SSSound.startSound(audioContext, sound);
+			? SoundReproduction.stopSound(audioContext, sound)
+			: SoundReproduction.startSound(audioContext, sound);
 
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? newSound
@@ -125,12 +121,12 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleVolumeChange = (e, id) => {
-		const sound = soundList.find(sound => sound.id === id);
+		const sound = soundsList.find(sound => sound.id === id);
 		if (sound.gainNode) {
 			sound.gainNode.gain.value = +e.target.value;
 		}
 
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, volume: +e.target.value }
@@ -144,7 +140,7 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleMinIntervalChange = (e, id) => {
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, minInterval: +e.target.value }
@@ -158,7 +154,7 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleMaxIntervalChange = (e, id) => {
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? { ...sound, maxInterval: +e.target.value }
@@ -167,25 +163,29 @@ function Scene({ audioContext }) {
 		});
 	};
 
-	const handleAddSound = () => {
-		ASound.selectFiles().then(files => {
-			let id = ASound.getNewElementId(soundList);
+	const handleAddSoundBtn = () => {
+		AddingSound.selectFiles().then(files => {
+			let id = AddingSound.getNewElementId(soundsList);
 
-			ASound.addNewSoundsInSoundList(audioContext, soundListState, files.map(file => ({
-				id: id += 1,
+			AddingSound.addNewSoundsInSoundList(audioContext, soundsListState, files.map(file => ({
+				id: id++,
 				title: file.name.substring(0, file.name.lastIndexOf('.')),
 				fileName: file.name,
-				volume: 0.5,
-				minInterval: 0,
-				maxInterval: 5,
+				volume: DEFAULT_SOUND_VOLUME,
+				minInterval: DEFAULT_SOUND_MIN_INTERVAL,
+				maxInterval: DEFAULT_SOUND_MAX_INTERVAL,
 				effectsList: [
 					{
+						id: 0,
+						name: 'Echo',
+					},
+					{
 						id: 1,
-						name: 'Reverb',
+						name: 'Distortion',
 					},
 					{
 						id: 2,
-						name: 'Distortion',
+						name: 'Pitch Shift',
 					},
 				],
 			})));
@@ -197,20 +197,20 @@ function Scene({ audioContext }) {
 	 * @param {number} id Sound ID.
 	 */
 	const handleDeleteBtn = (id) => {
-		const sound = soundList.find(sound => sound.id === id);
-		SSSound.stopSound(audioContext, sound);
+		const sound = soundsList.find(sound => sound.id === id);
+		SoundReproduction.stopSound(audioContext, sound);
 
-		setSoundList(prevList => prevList.filter(sound => sound.id !== id));
+		setSoundsList(prevList => prevList.filter(sound => sound.id !== id));
 	};
 
 	/**
 	 * @param {number} id
 	 */
 	const handleSoundEnd = (id) => {
-		const sound = soundList.find(sound => sound.id === id);
-		const newSound = SSSound.startSound(audioContext, sound);
+		const sound = soundsList.find(sound => sound.id === id);
+		const newSound = SoundReproduction.startSound(audioContext, sound);
 
-		setSoundList(prevList => {
+		setSoundsList(prevList => {
 			return prevList.map(sound => {
 				return sound.id === id
 					? newSound
@@ -222,10 +222,10 @@ function Scene({ audioContext }) {
 	/**
 	 * @param {MouseEvent<HTMLButtonElement>} e
 	 */
-	function handleOnSave(e) {
+	function handleSaveBtn(e) {
 		const jsonString = JSON.stringify({
 			title: sceneTitle,
-			sounds: soundList.map(sound => {
+			sounds: soundsList.map(sound => {
 				return {
 					title: sound.title,
 					fileName: sound.fileName,
@@ -238,7 +238,7 @@ function Scene({ audioContext }) {
 
 		const saveFileName = sceneTitle.toLowerCase().replace(' ', '_') + '.json';
 		// Add a checkmark animation in then block.
-		window['electronAPI'].writeSceneSave(`./public/saves/${ saveFileName }`, jsonString).then();
+		window['sceneAPI'].writeSceneSave(`./public/saves/${ saveFileName }`, jsonString).then();
 	}
 
 	/**
@@ -249,7 +249,7 @@ function Scene({ audioContext }) {
 		const oldName = './public/saves/' + sceneTitle.toLowerCase().replace(' ', '_') + '.json';
 		const newName = './public/saves/' + e.target.value.toLowerCase().replace(' ', '_') + '.json';
 		// Add a checkmark animation in then block.
-		window['electronAPI'].renameSceneSave(oldName, newName).then();
+		window['sceneAPI'].renameSceneSave(oldName, newName).then();
 
 		setSceneTitle(e.target.value);
 	}
@@ -259,7 +259,7 @@ function Scene({ audioContext }) {
 	 * @param {number} effectId
 	 */
 	function handleEffectClick(soundId, effectId) {
-		const sound = soundList.find(sound => sound.id === soundId)
+		const sound = soundsList.find(sound => sound.id === soundId)
 		const effect = sound.effectsList.find(effect => effect.id === effectId)
 		console.log(`Effect ${ effect.name } clicked`);
 	}
@@ -270,14 +270,14 @@ function Scene({ audioContext }) {
 				<SceneSidebar />
 			</div>
 			<div className='editor__content'>
-				<EditorTitlebar onSave={ handleOnSave } />
+				<EditorTitlebar onSave={ handleSaveBtn } />
 				<input
 					className='editor__content_title'
 					type='text'
 					value={ sceneTitle }
 					onChange={ (e) => handleOnTitleSceneChange(e) } />
 				<div className='editor__content_sounds-list'>
-					{ soundList.map((props) =>
+					{ soundsList.map((props) =>
 						<Sound
 							key={ props.id }
 							{ ...props }
@@ -291,7 +291,7 @@ function Scene({ audioContext }) {
 							onEffectClick={ handleEffectClick }
 						/>
 					) }
-					<SoundAddBtn onClick={ handleAddSound } />
+					<SoundAddBtn onClick={ handleAddSoundBtn } />
 				</div>
 			</div>
 		</div>

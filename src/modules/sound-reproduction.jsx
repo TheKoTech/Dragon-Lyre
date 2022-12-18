@@ -1,9 +1,4 @@
-export default class SSSound {
-
-	// ========================================
-	// Starting Sound
-	// ========================================
-
+export default class SoundReproduction {
 
 	/**
 	 * @param {AudioContext} audioContext
@@ -61,8 +56,10 @@ export default class SSSound {
 	 */
 	static #createSourceAndGain(audioContext, audioBuffer) {
 		const sourceNode = audioContext.createBufferSource();
-		const gainNode = audioContext.createGain();
 		sourceNode.buffer = audioBuffer;
+
+		const gainNode = audioContext.createGain();
+
 		sourceNode.connect(gainNode);
 		gainNode.connect(audioContext.destination);
 
